@@ -54,6 +54,12 @@ user.virtual('password')
     this.hashPassword = bcrypt.hashSync(password, 10);
 });
 
+user.virtual('fullName')
+.get(function() {
+    return `${this.firstName} ${this.lastName}`;
+});
+
+
 //create methods
 user.methods = {
     authenticate: function(password) {
