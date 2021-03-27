@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const env = require('dotenv');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
+
 const authRoutes = require('./routes/auth');  //authentication routes
 const adminRoutes = require('./routes/admin/auth');
 
@@ -23,7 +23,7 @@ mongoose.connect(
 
 
 //add middleware
-app.use(bodyParser());
+app.use(express.json());
 app.use('/api', authRoutes);
 app.use('/api', adminRoutes);
 
