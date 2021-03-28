@@ -2,3 +2,5 @@
 
 # dependencies
 /node_modules/
+/src/uploads/*
+!/src/uploads/.gitkeep
