@@ -3,11 +3,6 @@ const Product = require('../models/product');
 const slugify = require('slugify');
 
 exports.createProduct = (req, res) => {
-    // res.status(200).json({
-    //     file: req.files,
-    //     body: req.body,
-    // });
-
     const {
         name, price, description, 
         quantity, category, createdBy,
