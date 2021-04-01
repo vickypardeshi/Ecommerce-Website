@@ -6,13 +6,14 @@ import './App.css';
 import Home from './views/Home';
 import Signin from './views/Signin';
 import Signup from './views/Signup';
+import PrivateRoute from './components/HOC/PrivateRoute';
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <Switch>
-          <Route path="/" exact component={Home} />
+          <PrivateRoute path="/" exact component={Home} />
           <Route path="/signin" component={Signin} />
           <Route path="/signup" component={Signup} />
         </Switch>
