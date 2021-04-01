@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
     Container, Row, Col,Form, Button, 
 } from 'react-bootstrap';
@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import FormInput from '../components/common/FormInput';
 import Layout from '../components/Layout';
-import { login , isUserLoggedIn } from '../store/actions/action';
+import { login } from '../store/actions/action';
 
 const Signin = (props) => {
 
@@ -16,12 +16,6 @@ const Signin = (props) => {
     const auth = useSelector(state => state.auth);
 
     const dispatch = useDispatch();
-
-    useEffect(() => {
-        if(!auth.authenticate){
-            dispatch(isUserLoggedIn());
-        }
-    }, );
 
     const userLogin = (e) => {
         //avoid default behaviour of default

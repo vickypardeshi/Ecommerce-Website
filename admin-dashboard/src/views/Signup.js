@@ -1,4 +1,6 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import {
     Container, Row, Col,Form, Button, 
 } from 'react-bootstrap';
@@ -7,6 +9,13 @@ import FormInput from '../components/common/FormInput';
 
 
 const Signup = (props) => {
+
+    const auth = useSelector(state => state.auth);
+
+    if(auth.authenticate){
+        return <Redirect to={'/'} />
+    }
+
     return(
         <Layout>
             <Container>
