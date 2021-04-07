@@ -17,6 +17,7 @@ function getCategoriesList(categories, parentId=null){
             _id: cat._id,
             name: cat.name,
             slug: cat.slug,
+            parentId: cat.parentId,
             children: getCategoriesList(categories, cat._id), //call for getting child category
         });
     }
