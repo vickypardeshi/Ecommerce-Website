@@ -44,7 +44,7 @@ const Header = (props) => {
         );
     }
     return (
-        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" className="custom-navbar">
+        <Navbar collapseOnSelect fixed="top" expand="lg" bg="dark" variant="dark" className="custom-navbar">
             <Container fluid>
                 <Link to="/" className="navbar-brand">Admin Dashboard</Link>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />

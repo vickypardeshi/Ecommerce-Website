@@ -8,11 +8,25 @@ const initState = {
 
 const buildNewCategories = (parentId, categories, newCategory) => {
     let myCategories = [];
+
+    if(parentId === undefined){
+        return [
+            ...categories,
+            {
+                _id: newCategory._id,
+                name: newCategory.name,
+                slug: newCategory.slug,
+                children: [],
+
+            }
+        ];
+    }
+
     for(let category of categories){
         if(category._id === parentId){
             myCategories.push({
                 ...category,
-                children: category.children && category.children.length > 0 ?
+                children: category.children ?
                     buildNewCategories(parentId, [...category.children, {
                         _id: newCategory._id,
                         name: newCategory.name,
@@ -26,7 +40,7 @@ const buildNewCategories = (parentId, categories, newCategory) => {
         else{
             myCategories.push({
                 ...category,
-                children: category.children && category.children.length > 0 ?
+                children: category.children ?
                     buildNewCategories(parentId, category.children, newCategory)
                     : [],
             });

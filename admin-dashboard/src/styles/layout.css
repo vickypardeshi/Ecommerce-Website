@@ -4,7 +4,12 @@
     bottom: 0;
     left: 0;
     background-color: #fb641b;
+    padding: 0;
     padding-top: 60px;
+}
+
+.sidebar a{
+    display: block;
 }
 
 .sidebar ul{
@@ -33,5 +38,6 @@
 
 
 .main_container{
+    padding-top: 60px;
     margin-left: auto;
 }

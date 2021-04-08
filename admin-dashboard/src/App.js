@@ -8,7 +8,7 @@ import Home from './views/Home';
 import Signin from './views/Signin';
 import Signup from './views/Signup';
 import PrivateRoute from './components/HOC/PrivateRoute';
-import { isUserLoggedIn } from './store/actions/action';
+import { isUserLoggedIn, getInitialData } from './store/actions/action';
 import Products from './views/Products';
 import Orders from './views/Orders';
 import Category from './views/Category';
@@ -24,6 +24,7 @@ function App() {
     if (!auth.authenticate) {
       dispatch(isUserLoggedIn());
     }
+    dispatch(getInitialData());
   });
 
   return (
