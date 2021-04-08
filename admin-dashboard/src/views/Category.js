@@ -139,6 +139,7 @@ const Category = () => {
                 body={body}
                 handleClose={handleClose}
                 handleSubmit={handleSubmit}
+                buttonName={'Save'}
             />
         </Layout>
     );

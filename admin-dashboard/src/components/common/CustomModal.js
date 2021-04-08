@@ -4,10 +4,11 @@ import { Modal, Button } from 'react-bootstrap';
 const CustomModal = (props) => {
     const {
         show, title, body,
-        handleClose, handleSubmit
+        handleClose, handleSubmit, 
+        size, buttonName
     } = props;
     return (
-        <Modal show={show} onHide={handleClose}>
+        <Modal size={size} show={show} onHide={handleClose}>
             <Modal.Header closeButton>
                 <Modal.Title>{title}</Modal.Title>
             </Modal.Header>
@@ -16,7 +17,7 @@ const CustomModal = (props) => {
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="primary" onClick={handleSubmit}>
-                    Save
+                    {buttonName}
                 </Button>
             </Modal.Footer>
         </Modal>
