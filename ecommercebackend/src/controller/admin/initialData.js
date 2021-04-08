@@ -29,9 +29,12 @@ exports.initialData = async (req, res) => {
     const categories = await Category.find({}).exec();
     const products = await Product.find({})
         .select('_id name price quantity slug description productPictures category')
+        .populate({
+            path: 'category',
+            select: '_id name'
+        }) //belong to diff collection & it will fill the relavent data
         .exec();  //channing used
-        //.populate('category') //belong to diff collection & it will fill the relavent data
-
+        
     res.status(200).json({
         categories: getCategoriesList(categories),
         products

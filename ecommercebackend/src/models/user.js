@@ -49,10 +49,10 @@ const user = new mongoose.Schema({
 }, {timestamps: true});
 
 //add virtual field
-user.virtual('password')
-.set(function(password) {
-    this.hashPassword = bcrypt.hashSync(password, 10);
-});
+// user.virtual('password')
+// .set(function(password) {
+//     this.hashPassword = bcrypt.hashSync(password, 10);
+// });
 
 user.virtual('fullName')
 .get(function() {
@@ -62,8 +62,8 @@ user.virtual('fullName')
 
 //create methods
 user.methods = {
-    authenticate: function(password) {
-        return bcrypt.compareSync(password, this.hashPassword);
+    authenticate: async function(password) {
+        return await bcrypt.compare(password, this.hashPassword);
     }
 }
 
