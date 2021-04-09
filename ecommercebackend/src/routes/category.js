@@ -4,7 +4,7 @@ const multer = require('multer');
 const shortid = require('shortid');
 const path = require('path');
 const { requireSignin, adminMiddleware } = require('../common-middleware/middleware');
-const { addCategory, getCategories } = require('../controller/category');
+const { addCategory, getCategories, updateCategories } = require('../controller/category');
 
 
 //the disk storage engine gives you full control on storing files to disk.
@@ -21,5 +21,6 @@ const upload = multer({ storage });
 
 router.post('/category/create', requireSignin, adminMiddleware, upload.single('categoryImage'), addCategory);
 router.get('/category/getcategories', getCategories);
+router.post('/category/update',upload.array('categoryImage'), updateCategories);
 
 module.exports = router;
