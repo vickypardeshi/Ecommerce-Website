@@ -64,28 +64,6 @@ const Category = () => {
         setShow(false);
     }
 
-    const handleDeleteCategory = () => {
-        const checkedIdsArray = checkedArray.map(item => ({
-            _id: item.value
-        }));
-        const expandedIdsArray = expandedArray.map(item => ({
-            _id: item.value
-        }));
-        const idsArray = expandedIdsArray.concat(checkedIdsArray);
-
-        dispatch(deleteCategories(idsArray))
-            .then(result => {
-                if (result) {
-                    dispatch(getAllCategory());
-                }
-            })
-
-        setExpandedArray([]);
-        setCheckedArray([]);
-
-        setShowDeleteCategory(false);
-    }
-
     const updateCheckedAndExpandedCategories = () => {
         const categories = createCategoryList(category.categories);
         const checkedArray = [];
@@ -169,6 +147,30 @@ const Category = () => {
     const handleDeleteCategoryShow = () => {
         updateCheckedAndExpandedCategories();
         setShowDeleteCategory(true);
+    }
+    const handleDeleteCategory = () => {
+        const checkedIdsArray = checkedArray.map(item => ({
+            _id: item.value
+        }));
+        // const expandedIdsArray = expandedArray.map(item => ({
+        //     _id: item.value
+        // }));
+        // //const idsArray = expandedIdsArray.concat(checkedIdsArray);
+
+        if(checkedIdsArray.length > 0){
+            dispatch(deleteCategories(checkedIdsArray))
+                .then(result => {
+                    if(result){
+                        dispatch(getAllCategory());
+                    }
+                })
+        }
+
+
+        setExpandedArray([]);
+        setCheckedArray([]);
+
+        setShowDeleteCategory(false);
     }
 
     const renderCategories = (categories) => {
