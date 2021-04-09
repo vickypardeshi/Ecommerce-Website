@@ -3,17 +3,21 @@ import { Form }  from 'react-bootstrap';
 
 
 const FormInput = (props) => {
+    const {
+        label, type, placeholder,
+        value, onChange, error
+    } = props;
     return(
         <Form.Group>
-            <Form.Label>{props.label}</Form.Label>
+            {label && <Form.Label>{label}</Form.Label>}
             <Form.Control 
-                type={props.type} 
-                placeholder={props.placeholder}
-                value={props.value}
-                onChange={props.onChange}
+                type={type} 
+                placeholder={placeholder}
+                value={value}
+                onChange={onChange}
             />
             <Form.Text className="text-muted">
-                {props.error}
+                {error}
             </Form.Text>
         </Form.Group>  
     );
