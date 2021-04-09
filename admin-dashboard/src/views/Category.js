@@ -6,11 +6,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import CheckboxTree from 'react-checkbox-tree';
 import FormInput from '../components/common/FormInput';
 import Layout from '../components/Layout';
-import { addCategory, deleteCategories, getAllCategory, updateCategories, } from '../store/actions/action';
+import {
+    addCategory, deleteCategories, 
+    getAllCategory, updateCategories, 
+} from '../store/actions/action';
 import CustomModal from '../components/common/CustomModal';
 import {
     IoIosCheckboxOutline, IoIosCheckbox,
-    IoIosArrowForward, IoIosArrowDown,
+    IoIosArrowForward, IoIosArrowDown, 
+    IoIosTrash, IoIosAdd, IoIosCloudUpload,
 } from 'react-icons/io';
 import 'react-checkbox-tree/lib/react-checkbox-tree.css';
 import '../styles/category.css'
@@ -152,15 +156,11 @@ const Category = () => {
         const checkedIdsArray = checkedArray.map(item => ({
             _id: item.value
         }));
-        // const expandedIdsArray = expandedArray.map(item => ({
-        //     _id: item.value
-        // }));
-        // //const idsArray = expandedIdsArray.concat(checkedIdsArray);
-
-        if(checkedIdsArray.length > 0){
+        
+        if (checkedIdsArray.length > 0) {
             dispatch(deleteCategories(checkedIdsArray))
                 .then(result => {
-                    if(result){
+                    if (result) {
                         dispatch(getAllCategory());
                     }
                 })
@@ -204,30 +204,43 @@ const Category = () => {
 
     const addCategoryBody = (
         <>
-            <FormInput
-                value={categoryName}
-                placeholder={'Category Name'}
-                onChange={(e) => setCategoryName(e.target.value)}
-            />
-            <select
-                className="form-control"
-                value={parentCategoryId}
-                onChange={(e) => setParentCategoryId(e.target.value)}
-            >
-                <option>Select Category</option>
-                {
-                    createCategoryList(category.categories).map(option =>
-                        <option key={option.value} value={option.value}>
-                            {option.name}
-                        </option>
-                    )
-                }
-            </select>
-            <input
-                type="file"
-                name="categoryImage"
-                onChange={handleCategoryImage}
-            />
+            <Row>
+                <Col>
+                    <FormInput
+                        value={categoryName}
+                        placeholder={'Category Name'}
+                        onChange={(e) => setCategoryName(e.target.value)}
+                    />
+                </Col>
+                <Col>
+                    <select
+                        className="form-control"
+                        value={parentCategoryId}
+                        onChange={(e) => setParentCategoryId(e.target.value)}
+                    >
+                        <option>Select Category</option>
+                        {
+                            createCategoryList(category.categories).map(option =>
+                                <option key={option.value} value={option.value}>
+                                    {option.name}
+                                </option>
+                            )
+                        }
+                    </select>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <input
+                        type="file"
+                        name="categoryImage"
+                        onChange={handleCategoryImage}
+                    />
+                </Col>
+            </Row>
+
+
+
         </>
     );
 
@@ -249,11 +262,12 @@ const Category = () => {
                                 onChange={(e) => handleCategoryChange(
                                     'name', e.target.value, index, 'expanded'
                                 )}
+                                className="form-control-sm"
                             />
                         </Col>
                         <Col>
                             <select
-                                className="form-control"
+                                className="form-control form-control-sm"
                                 value={item.parentId}
                                 onChange={(e) => handleCategoryChange(
                                     'parentId', e.target.value, index, 'expanded'
@@ -360,15 +374,17 @@ const Category = () => {
                     <Col md={12}>
                         <div className="category">
                             <h3>Category</h3>
-                            <button onClick={handleShow}>Add</button>
+                            <div className="buttonContainer">
+                                <span>Actions: </span>
+                                <button onClick={handleShow}><IoIosAdd /> <span>Add</span> </button>
+                                <button onClick={handleDeleteCategoryShow}><IoIosTrash /> <span>Delete</span></button>
+                                <button onClick={handleUpdatedCategoryShow}><IoIosCloudUpload /> <span>Edit</span></button>
+                            </div>
                         </div>
                     </Col>
                 </Row>
                 <Row>
                     <Col md={12}>
-                        {/* <ul>
-                            {renderCategories(category.categories)}
-                        </ul> */}
                         <CheckboxTree
                             nodes={renderCategories(category.categories)}
                             checked={checked}
@@ -383,12 +399,6 @@ const Category = () => {
                                 expandOpen: <IoIosArrowDown />,
                             }}
                         />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <button onClick={handleDeleteCategoryShow}>Delete</button>
-                        <button onClick={handleUpdatedCategoryShow}>Edit</button>
                     </Col>
                 </Row>
             </Container>

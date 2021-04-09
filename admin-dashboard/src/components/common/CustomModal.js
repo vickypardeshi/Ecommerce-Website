@@ -22,7 +22,11 @@ const CustomModal = (props) => {
                             {btn.label}
                         </Button>
                     ) :
-                        <Button variant="primary" onClick={handleSubmit}>
+                        <Button 
+                            variant="primary"  
+                            className="btn-sm" 
+                            onClick={handleSubmit}
+                        >
                             {buttonName}
                         </Button>
                 }

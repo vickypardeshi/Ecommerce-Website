@@ -11,6 +11,7 @@ const FormInput = (props) => {
         <Form.Group>
             {label && <Form.Label>{label}</Form.Label>}
             <Form.Control 
+                {...props}
                 type={type} 
                 placeholder={placeholder}
                 value={value}
