@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import CheckboxTree from 'react-checkbox-tree';
 import FormInput from '../components/common/FormInput';
 import Layout from '../components/Layout';
-import { addCategory, getAllCategory, updateCategories, } from '../store/actions/action';
+import { addCategory, deleteCategories, getAllCategory, updateCategories, } from '../store/actions/action';
 import CustomModal from '../components/common/CustomModal';
 import {
     IoIosCheckboxOutline, IoIosCheckbox,
@@ -27,6 +27,8 @@ const Category = () => {
     const [checkedArray, setCheckedArray] = useState([]);
     const [expandedArray, setExpandedArray] = useState([]);
     const [showUpdatedCategory, setShowUpdatedCategory] = useState(false);
+
+    const [showDeleteCategory, setShowDeleteCategory] = useState(false);
 
     const category = useSelector(state => state.category);
     const dispatch = useDispatch();
@@ -61,11 +63,30 @@ const Category = () => {
 
         setShow(false);
     }
-    
-    const handleUpdatedCategoryClose = () => {
-        setShowUpdatedCategory(false);
+
+    const handleDeleteCategory = () => {
+        const checkedIdsArray = checkedArray.map(item => ({
+            _id: item.value
+        }));
+        const expandedIdsArray = expandedArray.map(item => ({
+            _id: item.value
+        }));
+        const idsArray = expandedIdsArray.concat(checkedIdsArray);
+
+        dispatch(deleteCategories(idsArray))
+            .then(result => {
+                if (result) {
+                    dispatch(getAllCategory());
+                }
+            })
+
+        setExpandedArray([]);
+        setCheckedArray([]);
+
+        setShowDeleteCategory(false);
     }
-    const handleUpdatedCategoryShow = () => {
+
+    const updateCheckedAndExpandedCategories = () => {
         const categories = createCategoryList(category.categories);
         const checkedArray = [];
         const expandedArray = [];
@@ -86,21 +107,28 @@ const Category = () => {
 
         setCheckedArray(checkedArray);
         setExpandedArray(expandedArray);
-
-        setShowUpdatedCategory(true);
-        console.log({ checked, expanded, checkedArray, expandedArray});
+        console.log({ checked, expanded, checkedArray, expandedArray });
     }
-    
-    const handleUpdatedCategorySubmit = () => {
+
+    const handleUpdatedCategoryShow = () => {
+        updateCheckedAndExpandedCategories();
+        setShowUpdatedCategory(true);
+    }
+
+    const handleUpdatedCategoryClose = () => {
+        setShowUpdatedCategory(false);
+    }
+
+    const handleUpdatedCategory = () => {
         const form = new FormData();
 
-        expandedArray.forEach((item, index) =>{
+        expandedArray.forEach((item, index) => {
             form.append('_id', item.value);
             form.append('name', item.name);
             form.append('type', item.type);
             form.append('parentId', item.parentId ? item.parentId : "");
         });
-        checkedArray.forEach((item, index) =>{
+        checkedArray.forEach((item, index) => {
             form.append('_id', item.value);
             form.append('name', item.name);
             form.append('type', item.type);
@@ -108,11 +136,11 @@ const Category = () => {
         });
 
         dispatch(updateCategories(form))
-        .then(result => {
-            if(result){
-                dispatch(getAllCategory());
-            }
-        })
+            .then(result => {
+                if (result) {
+                    dispatch(getAllCategory());
+                }
+            })
 
         setExpandedArray([]);
         setCheckedArray([]);
@@ -120,19 +148,27 @@ const Category = () => {
         setShowUpdatedCategory(false);
     }
 
-    const handleCategoryChange= (key, value, index, type) => {
-        if(type === "checked"){
+    const handleCategoryChange = (key, value, index, type) => {
+        if (type === "checked") {
             const updatedCheckedArray = checkedArray.map((item, _index) =>
-                index === _index ? {...item, [key]: value} : item
+                index === _index ? { ...item, [key]: value } : item
             );
             setCheckedArray(updatedCheckedArray);
         }
-        else if(type === "expanded"){
+        else if (type === "expanded") {
             const updatedExpandedArray = expandedArray.map((item, _index) =>
-                index === _index ? {...item, [key]: value} : item
+                index === _index ? { ...item, [key]: value } : item
             );
             setExpandedArray(updatedExpandedArray);
         }
+    }
+
+    const handleDeleteCategoryClose = () => {
+        setShowDeleteCategory(false);
+    }
+    const handleDeleteCategoryShow = () => {
+        updateCheckedAndExpandedCategories();
+        setShowDeleteCategory(true);
     }
 
     const renderCategories = (categories) => {
@@ -297,6 +333,24 @@ const Category = () => {
         </>
     );
 
+    const deleteCategoryBody = (
+        <>
+            Are you sure want to delete
+            <h5>Expanded</h5>
+            {
+                expandedArray.map((item, index) =>
+                    <span key={index}>{item.name}</span>
+                )
+            }
+            <h5>Checked</h5>
+            {
+                checkedArray.map((item, index) =>
+                    <span key={index}>{item.name}</span>
+                )
+            }
+        </>
+    );
+
     return (
         <Layout sidebar>
             <Container>
@@ -331,7 +385,7 @@ const Category = () => {
                 </Row>
                 <Row>
                     <Col>
-                        <button>Delete</button>
+                        <button onClick={handleDeleteCategoryShow}>Delete</button>
                         <button onClick={handleUpdatedCategoryShow}>Edit</button>
                     </Col>
                 </Row>
@@ -352,8 +406,28 @@ const Category = () => {
                 body={updateCategoryBody}
                 size="lg"
                 handleClose={handleUpdatedCategoryClose}
-                handleSubmit={handleUpdatedCategorySubmit}
+                handleSubmit={handleUpdatedCategory}
                 buttonName={'Update'}
+            />
+            {/* Delete Category */}
+            <CustomModal
+                title={'Delete Category'}
+                show={showDeleteCategory}
+                body={deleteCategoryBody}
+                handleClose={handleDeleteCategoryClose}
+                handleSubmit={handleDeleteCategory}
+                buttons={[
+                    {
+                        label: 'No',
+                        color: 'primary',
+                        onClick: () => handleDeleteCategoryClose()
+                    },
+                    {
+                        label: 'Yes',
+                        color: 'danger',
+                        onClick: () => handleDeleteCategory()
+                    }
+                ]}
             />
         </Layout>
     );

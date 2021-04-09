@@ -4,8 +4,8 @@ import { Modal, Button } from 'react-bootstrap';
 const CustomModal = (props) => {
     const {
         show, title, body,
-        handleClose, handleSubmit, 
-        size, buttonName
+        handleClose, handleSubmit,
+        size, buttonName, buttons
     } = props;
     return (
         <Modal size={size} show={show} onHide={handleClose}>
@@ -16,9 +16,16 @@ const CustomModal = (props) => {
                 {body}
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="primary" onClick={handleSubmit}>
-                    {buttonName}
-                </Button>
+                {
+                    buttons ? buttons.map((btn, index) =>
+                        <Button key={index} variant={btn.color} onClick={btn.onClick}>
+                            {btn.label}
+                        </Button>
+                    ) :
+                        <Button variant="primary" onClick={handleSubmit}>
+                            {buttonName}
+                        </Button>
+                }
             </Modal.Footer>
         </Modal>
     );

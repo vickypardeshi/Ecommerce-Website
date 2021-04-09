@@ -12,7 +12,7 @@ export const getAllCategory = () => {
         console.log(res);
 
 
-        if(res.status === 200){
+        if (res.status === 200) {
             const { categoryList } = res.data;
 
             dispatch({
@@ -22,7 +22,7 @@ export const getAllCategory = () => {
                 }
             });
         }
-        else{
+        else {
             dispatch({
                 type: categoryConstants.GET_ALL_CATEGORIES_FAILURE,
                 payload: {
@@ -30,7 +30,7 @@ export const getAllCategory = () => {
                 }
             });
         }
-    }   
+    }
 }
 
 export const addCategory = (form) => {
@@ -40,21 +40,26 @@ export const addCategory = (form) => {
             type: categoryConstants.ADD_NEW_CATEGORY_REQUEST
         });
 
-        const res = await axios.post('/category/create', form);
+        try {
+            const res = await axios.post('/category/create', form);
 
-        if(res.status === 201){
-            dispatch({
-                type: categoryConstants.ADD_NEW_CATEGORY_SUCCESS,
-                payload: {
-                    category: res.data.cat
-                }
-            });
+            if (res.status === 201) {
+                dispatch({
+                    type: categoryConstants.ADD_NEW_CATEGORY_SUCCESS,
+                    payload: {
+                        category: res.data.cat
+                    }
+                });
+            }
+            else {
+                dispatch({
+                    type: categoryConstants.ADD_NEW_CATEGORY_FAILURE,
+                    payload: res.data.error
+                });
+            }
         }
-        else{
-            dispatch({
-                type: categoryConstants.ADD_NEW_CATEGORY_FAILURE,
-                payload: res.data.error
-            });
+        catch (error) {
+            console.log(error.response);
         }
     }
 }
@@ -64,10 +69,28 @@ export const updateCategories = (form) => {
 
         const res = await axios.post('/category/update', form);
 
-        if(res.status === 201){
+        if (res.status === 201) {
             return true;
         }
-        else{
+        else {
+            return false;
+        }
+    }
+}
+
+export const deleteCategories = (ids) => {
+    return async dispatch => {
+
+        const res = await axios.post('/category/delete', {
+            payload: {
+                ids
+            }
+        });
+
+        if (res.status === 201) {
+            return true;
+        }
+        else {
             return false;
         }
     }
