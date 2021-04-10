@@ -9,7 +9,7 @@ const initState = {
 const buildNewCategories = (parentId, categories, newCategory) => {
     let myCategories = [];
 
-    if(parentId === undefined){
+    if (parentId === undefined) {
         return [
             ...categories,
             {
@@ -22,8 +22,8 @@ const buildNewCategories = (parentId, categories, newCategory) => {
         ];
     }
 
-    for(let category of categories){
-        if(category._id === parentId){
+    for (let category of categories) {
+        if (category._id === parentId) {
             const createNewCategory = {
                 _id: newCategory._id,
                 name: newCategory.name,
@@ -35,10 +35,10 @@ const buildNewCategories = (parentId, categories, newCategory) => {
                 ...category,
                 children: category.children.length > 0 ?
                     [...category.children, createNewCategory]
-                :   [createNewCategory],
+                    : [createNewCategory],
             });
         }
-        else{
+        else {
             myCategories.push({
                 ...category,
                 children: category.children ?
@@ -46,7 +46,7 @@ const buildNewCategories = (parentId, categories, newCategory) => {
                     : [],
             });
         }
-        
+
     }
 
     return myCategories;
@@ -70,7 +70,7 @@ export default (state = initState, action) => {
         case categoryConstants.ADD_NEW_CATEGORY_SUCCESS:
             const category = action.payload.category;
             const updatedCategories = buildNewCategories(category.parentId, state.categories, category);
-            
+
             state = {
                 ...state,
                 loading: false,
@@ -83,9 +83,27 @@ export default (state = initState, action) => {
                 loading: false,
             }
             break;
+        case categoryConstants.UPDATE_CATEGORIES_REQUEST:
+            state = {
+                ...state,
+                loading: true
+            }
+            break;
+        case categoryConstants.UPDATE_CATEGORIES_SUCCESS:
+            state = {
+                ...state,
+                loading: false
+            }
+            break;
+        case categoryConstants.UPDATE_CATEGORIES_FAILURE:
+            state = {
+                ...state,
+                loading: false,
+                error: action.payload.error
+            }
+            break;
         default:
             return state;
     }
-
     return state;
 }

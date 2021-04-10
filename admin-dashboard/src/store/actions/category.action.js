@@ -1,7 +1,7 @@
 import axios from '../../api/axios';
 import { categoryConstants } from './constants';
 
-export const getAllCategory = () => {
+const getAllCategory = () => {
     return async dispatch => {
 
         dispatch({
@@ -67,13 +67,25 @@ export const addCategory = (form) => {
 export const updateCategories = (form) => {
     return async dispatch => {
 
+        dispatch({
+            type: categoryConstants.UPDATE_CATEGORIES_REQUEST,
+        });
+
         const res = await axios.post('/category/update', form);
 
         if (res.status === 201) {
-            return true;
+            dispatch(getAllCategory());
+            dispatch({
+                type: categoryConstants.UPDATE_CATEGORIES_SUCCESS,
+            });
         }
         else {
-            return false;
+            dispatch({
+                type: categoryConstants.UPDATE_CATEGORIES_FAILURE,
+                payload: {
+                    error: 'Something went wrong'
+                }
+            });
         }
     }
 }
@@ -94,4 +106,8 @@ export const deleteCategories = (ids) => {
             return false;
         }
     }
+}
+
+export {
+    getAllCategory
 }

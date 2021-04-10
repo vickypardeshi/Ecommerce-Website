@@ -117,12 +117,7 @@ const Category = () => {
             form.append('parentId', item.parentId ? item.parentId : "");
         });
 
-        dispatch(updateCategories(form))
-            .then(result => {
-                if (result) {
-                    dispatch(getAllCategory());
-                }
-            })
+        dispatch(updateCategories(form));
 
         setExpandedArray([]);
         setCheckedArray([]);
