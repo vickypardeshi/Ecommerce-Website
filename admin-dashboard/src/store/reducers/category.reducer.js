@@ -16,6 +16,7 @@ const buildNewCategories = (parentId, categories, newCategory) => {
                 _id: newCategory._id,
                 name: newCategory.name,
                 slug: newCategory.slug,
+                type: newCategory.type,
                 children: [],
 
             }
@@ -28,6 +29,7 @@ const buildNewCategories = (parentId, categories, newCategory) => {
                 _id: newCategory._id,
                 name: newCategory.name,
                 slug: newCategory.slug,
+                type: newCategory.type,
                 parentId: newCategory.parentId,
                 children: [],
             };
@@ -55,10 +57,23 @@ const buildNewCategories = (parentId, categories, newCategory) => {
 // eslint-disable-next-line import/no-anonymous-default-export
 export default (state = initState, action) => {
     switch (action.type) {
+        case categoryConstants.GET_ALL_CATEGORIES_REQUEST:
+            state = {
+                ...state,
+                loading: true
+            }
+            break;
         case categoryConstants.GET_ALL_CATEGORIES_SUCCESS:
             state = {
                 ...state,
+                loading: false,
                 categories: action.payload.categories,
+            }
+            break;
+        case categoryConstants.GET_ALL_CATEGORIES_FAILURE:
+            state = {
+                ...state,
+                loading: false,
             }
             break;
         case categoryConstants.ADD_NEW_CATEGORY_REQUEST:

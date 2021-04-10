@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 import {
     Col, Container, Row,
+    Spinner
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import CheckboxTree from 'react-checkbox-tree';
 import FormInput from '../components/common/FormInput';
 import Layout from '../components/Layout';
 import {
-    addCategory, deleteCategories, 
-    getAllCategory, updateCategories, 
+    addCategory, deleteCategories,
+    getAllCategory, updateCategories,
 } from '../store/actions/action';
 import CustomModal from '../components/common/CustomModal';
 import {
     IoIosCheckboxOutline, IoIosCheckbox,
-    IoIosArrowForward, IoIosArrowDown, 
+    IoIosArrowForward, IoIosArrowDown,
     IoIosTrash, IoIosAdd, IoIosCloudUpload,
 } from 'react-icons/io';
 import 'react-checkbox-tree/lib/react-checkbox-tree.css';
@@ -35,6 +36,8 @@ const Category = () => {
     const [showDeleteCategory, setShowDeleteCategory] = useState(false);
 
     const category = useSelector(state => state.category);
+    const { loading } = category;
+
     const dispatch = useDispatch();
 
     const handleClose = () => {
@@ -151,7 +154,7 @@ const Category = () => {
         const checkedIdsArray = checkedArray.map(item => ({
             _id: item.value
         }));
-        
+
         if (checkedIdsArray.length > 0) {
             dispatch(deleteCategories(checkedIdsArray))
                 .then(result => {
@@ -188,6 +191,7 @@ const Category = () => {
             options.push({
                 value: category._id,
                 name: category.name,
+                type: category.type,
                 parentId: category.parentId,
             });
             if (category.children.length > 0) {
@@ -281,6 +285,10 @@ const Category = () => {
                         <Col>
                             <select
                                 className="form-control"
+                                value={item.type}
+                                onChange={(e) => handleCategoryChange(
+                                    'type', e.target.value, index, 'expanded'
+                                )}
                             >
                                 <option value="">Select Type</option>
                                 <option value="store">Store</option>
@@ -326,6 +334,10 @@ const Category = () => {
                         <Col>
                             <select
                                 className="form-control"
+                                value={item.type}
+                                onChange={(e) => handleCategoryChange(
+                                    'type', e.target.value, index, 'checked'
+                                )}
                             >
                                 <option value="">Select Type</option>
                                 <option value="store">Store</option>
@@ -365,37 +377,55 @@ const Category = () => {
     return (
         <Layout sidebar>
             <Container>
-                <Row>
-                    <Col md={12}>
-                        <div className="category">
-                            <h3>Category</h3>
-                            <div className="buttonContainer">
-                                <span>Actions: </span>
-                                <button onClick={handleShow}><IoIosAdd /> <span>Add</span> </button>
-                                <button onClick={handleDeleteCategoryShow}><IoIosTrash /> <span>Delete</span></button>
-                                <button onClick={handleUpdatedCategoryShow}><IoIosCloudUpload /> <span>Edit</span></button>
-                            </div>
-                        </div>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col md={12}>
-                        <CheckboxTree
-                            nodes={renderCategories(category.categories)}
-                            checked={checked}
-                            expanded={expanded}
-                            onCheck={checked => setChecked(checked)}
-                            onExpand={expanded => setExpanded(expanded)}
-                            icons={{
-                                check: <IoIosCheckbox />,
-                                uncheck: <IoIosCheckboxOutline />,
-                                halfCheck: <IoIosCheckboxOutline />,
-                                expandClose: <IoIosArrowForward />,
-                                expandOpen: <IoIosArrowDown />,
-                            }}
-                        />
-                    </Col>
-                </Row>
+                {
+                    loading ?
+                        <>
+                            <Row>
+                                <Col
+                                    className="text-center py-3"
+                                >
+                                    <Spinner
+                                        variant="primary"
+                                        animation="border"
+                                    />
+                                </Col>
+                            </Row>
+                        </>
+                        :
+                        <>
+                            <Row>
+                                <Col md={12}>
+                                    <div className="category">
+                                        <h3>Category</h3>
+                                        <div className="buttonContainer">
+                                            <span>Actions: </span>
+                                            <button onClick={handleShow}><IoIosAdd /> <span>Add</span> </button>
+                                            <button onClick={handleDeleteCategoryShow}><IoIosTrash /> <span>Delete</span></button>
+                                            <button onClick={handleUpdatedCategoryShow}><IoIosCloudUpload /> <span>Edit</span></button>
+                                        </div>
+                                    </div>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col md={12}>
+                                    <CheckboxTree
+                                        nodes={renderCategories(category.categories)}
+                                        checked={checked}
+                                        expanded={expanded}
+                                        onCheck={checked => setChecked(checked)}
+                                        onExpand={expanded => setExpanded(expanded)}
+                                        icons={{
+                                            check: <IoIosCheckbox />,
+                                            uncheck: <IoIosCheckboxOutline />,
+                                            halfCheck: <IoIosCheckboxOutline />,
+                                            expandClose: <IoIosArrowForward />,
+                                            expandOpen: <IoIosArrowDown />,
+                                        }}
+                                    />
+                                </Col>
+                            </Row>
+                        </>
+                }
             </Container>
 
             <CustomModal

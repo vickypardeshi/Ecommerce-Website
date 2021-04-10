@@ -7,11 +7,24 @@ const initState = {
 }
 // eslint-disable-next-line import/no-anonymous-default-export
 export default (state = initState, action) => {
-    switch(action.type){
+    switch (action.type) {
+        case productConstants.GET_ALL_PRODUCTS_REQUEST:
+            state = {
+                ...state,
+                loading: true,
+            }
+            break;
         case productConstants.GET_ALL_PRODUCTS_SUCCESS:
             state = {
                 ...state,
+                loading: false,
                 products: action.payload.products,
+            }
+            break;
+        case productConstants.GET_ALL_PRODUCTS_FAILURE:
+            state = {
+                ...state,
+                loading: false,
             }
             break;
         case productConstants.ADD_NEW_PRODUCT_REQUEST:
