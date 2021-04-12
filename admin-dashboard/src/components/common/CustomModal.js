@@ -5,7 +5,7 @@ const CustomModal = (props) => {
     const {
         show, title, body,
         handleClose, handleSubmit,
-        size, buttonName, buttons
+        size, button, buttons
     } = props;
     return (
         <Modal size={size} show={show} onHide={handleClose}>
@@ -27,7 +27,7 @@ const CustomModal = (props) => {
                             className="btn-sm" 
                             onClick={handleSubmit}
                         >
-                            {buttonName}
+                            {button}
                         </Button>
                 }
             </Modal.Footer>

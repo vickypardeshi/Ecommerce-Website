@@ -120,7 +120,7 @@ const Products = () => {
                 placeholder={'Product Description'}
                 onChange={(e) => setDescription(e.target.value)}
             />
-            <select
+            {/* <select
                 className="form-control"
                 value={categoryId}
                 onChange={(e) => setCategoryId(e.target.value)}
@@ -133,7 +133,14 @@ const Products = () => {
                         </option>
                     )
                 }
-            </select>
+            </select> */}
+            <FormInput
+                inputType="select"
+                placeholder={'Select Category'}
+                value={categoryId}
+                onChange={(e) => setCategoryId(e.target.value)}
+                options={createCategoryList(category.categories)}
+            />
             {
                 productPictures.length > 0
                     ? productPictures.map((pic, index) =>
@@ -151,7 +158,7 @@ const Products = () => {
 
     const productDetailsBody = (
         <>
-            {!!productDetails ? 
+            {!!productDetails ?
                 <Container>
                     <Row>
                         <Col md={6}>
@@ -184,17 +191,17 @@ const Products = () => {
                             <label className="key">Product Pictures</label>
                             <div className="picture-container">
                                 {
-                                    productDetails.productPictures.map(picture => 
+                                    productDetails.productPictures.map(picture =>
                                         <div className="picture">
-                                            <img src={generatePublicUrl(picture.img)} alt=""/>
+                                            <img src={generatePublicUrl(picture.img)} alt="" />
                                         </div>
                                     )
                                 }
                             </div>
                         </Col>
                     </Row>
-                </Container>    
-            : 
+                </Container>
+                :
                 null
             }
         </>
@@ -258,7 +265,7 @@ const Products = () => {
                 body={createNewProductBody}
                 handleClose={handleClose}
                 handleSubmit={handleSubmit}
-                buttonName={'Save'}
+                button={'Save'}
             />
 
             <CustomModal
@@ -268,7 +275,7 @@ const Products = () => {
                 handleClose={handleCloseProductDetailsModal}
                 handleSubmit={handleCloseProductDetailsModal}
                 size="lg"
-                buttonName={'Close'}
+                button={'Close'}
             />
         </Layout>
     );

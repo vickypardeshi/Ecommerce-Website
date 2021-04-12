@@ -212,20 +212,13 @@ const Category = () => {
                     />
                 </Col>
                 <Col>
-                    <select
-                        className="form-control"
+                    <FormInput
+                        inputType="select"
+                        placeholder={'Select Category'}
                         value={parentCategoryId}
                         onChange={(e) => setParentCategoryId(e.target.value)}
-                    >
-                        <option>Select Category</option>
-                        {
-                            createCategoryList(category.categories).map(option =>
-                                <option key={option.value} value={option.value}>
-                                    {option.name}
-                                </option>
-                            )
-                        }
-                    </select>
+                        options={createCategoryList(category.categories)}
+                    />
                 </Col>
             </Row>
             <Row>
@@ -261,26 +254,18 @@ const Category = () => {
                                 onChange={(e) => handleCategoryChange(
                                     'name', e.target.value, index, 'expanded'
                                 )}
-                                className="form-control-sm"
                             />
                         </Col>
                         <Col>
-                            <select
-                                className="form-control form-control-sm"
+                            <FormInput
+                                inputType="select"
+                                placeholder={'Select Category'}
                                 value={item.parentId}
                                 onChange={(e) => handleCategoryChange(
                                     'parentId', e.target.value, index, 'expanded'
                                 )}
-                            >
-                                <option>Select Category</option>
-                                {
-                                    createCategoryList(category.categories).map(option =>
-                                        <option key={option.value} value={option.value}>
-                                            {option.name}
-                                        </option>
-                                    )
-                                }
-                            </select>
+                                options={createCategoryList(category.categories)}
+                            />
                         </Col>
                         <Col>
                             <select
@@ -314,22 +299,15 @@ const Category = () => {
                             />
                         </Col>
                         <Col>
-                            <select
-                                className="form-control"
+                            <FormInput
+                                inputType="select"
+                                placeholder={'Select Category'}
                                 value={item.parentId}
                                 onChange={(e) => handleCategoryChange(
                                     'parentId', e.target.value, index, 'checked'
                                 )}
-                            >
-                                <option>Select Category</option>
-                                {
-                                    createCategoryList(category.categories).map(option =>
-                                        <option key={option.value} value={option.value}>
-                                            {option.name}
-                                        </option>
-                                    )
-                                }
-                            </select>
+                                options={createCategoryList(category.categories)}
+                            />
                         </Col>
                         <Col>
                             <select
@@ -434,7 +412,7 @@ const Category = () => {
                 body={addCategoryBody}
                 handleClose={handleClose}
                 handleSubmit={handleSubmit}
-                buttonName={'Save'}
+                button={'Save'}
             />
             {/* Update Category */}
             <CustomModal
@@ -444,7 +422,7 @@ const Category = () => {
                 size="lg"
                 handleClose={handleUpdatedCategoryClose}
                 handleSubmit={handleUpdatedCategory}
-                buttonName={'Update'}
+                button={'Update'}
             />
             {/* Delete Category */}
             <CustomModal
