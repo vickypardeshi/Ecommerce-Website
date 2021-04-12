@@ -13,7 +13,7 @@ export const getProductBySlug = (slug) => {
             dispatch({
                 type: productConstants.GET_PRODUCT_BY_SLUG_SUCCESS,
                 payload: res.data 
-            })
+            });
         }
         else{
             dispatch({
