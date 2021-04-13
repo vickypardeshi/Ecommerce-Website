@@ -10,7 +10,7 @@ import {
     MaterialButton,
     DropdownMenu,
 } from '../components/derived/HeaderContent';
-import { login } from '../store/actions/action';
+import { login, signout } from '../store/actions/action';
 import '../styles/header.css'
 
 
@@ -22,14 +22,29 @@ const Header = (props) => {
     const auth = useSelector(state => state.auth);
     const dispatch = useDispatch();
 
+    const handleLoginModalClose = () => {
+        setLoginModal(false);
+        setEmail('');
+        setPassword('');
+    }
+    const handleLoginModalShow = () => {
+        setLoginModal(true);
+    }
+
     const userLogin = () => {
         dispatch(login({ email, password }));
+    }
+
+    const logout = () => {
+        dispatch(signout());
+        setEmail('');
+        setPassword('');
     }
 
     useEffect(() => {
 
         if(auth.authenticate){
-            setLoginModal(false);
+            handleLoginModalClose();
         }
 
     }, [auth.authenticate]);
@@ -57,7 +72,7 @@ const Header = (props) => {
                     { label: "Rewards", href: "", icon: null },
                     { label: "Notifications", href: "", icon: null },
                     { label: "Gift Cards", href: "", icon: null },
-                    { label: "Logout", href: "", icon: null, },//onClick: logout },
+                    { label: "Logout", href: "", icon: null, onClick: logout },
                 ]}
             />
         );
@@ -71,7 +86,7 @@ const Header = (props) => {
                         className="loginButton"
                         onClick={() => {
                             //setSignup(false);
-                            setLoginModal(true);
+                            handleLoginModalShow();
                         }}
                     >
                         Login
@@ -85,7 +100,7 @@ const Header = (props) => {
                         href: `/account/orders`,
                         icon: null,
                         onClick: () => {
-                            !auth.authenticate && setLoginModal(true);
+                            !auth.authenticate && handleLoginModalShow();
                         },
                     },
                     { label: "Wishlist", href: "", icon: null },
@@ -97,7 +112,7 @@ const Header = (props) => {
                         <span>New Customer?</span>
                         <a
                             onClick={() => {
-                                setLoginModal(true);
+                                handleLoginModalShow();
                                 //setSignup(true);
                             }}
                             style={{ color: "#2874f0" }}
@@ -114,7 +129,7 @@ const Header = (props) => {
         <div className="header">
             <Modal
                 visible={loginModal}
-                onClose={() => setLoginModal(false)}
+                onClose={handleLoginModalClose}
             >
                 <div className="authContainer">
                     <div className="row">

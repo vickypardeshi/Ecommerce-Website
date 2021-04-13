@@ -83,6 +83,7 @@ const MaterialButton = (props) => {
                 }}
                 onClick={onClick}
             >
+                {props.icon && props.icon}
                 {props.title && props.title}
             </button>
         </div>
@@ -100,9 +101,8 @@ const DropdownMenu = (props) => {
                     {props.menus &&
                         props.menus.map((item, index) => (
                             <li key={index}>
-                                <a
-                                    onClick={(e) => {
-                                        if (item.onClick) {
+                                <a  onClick={(e) => {
+                                        if(item.onClick) {
                                             e.preventDefault();
                                             item.onClick && item.onClick();
                                         }
