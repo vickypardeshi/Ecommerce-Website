@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Layout from '../../components/Layout';
 import Card from '../../components/common/Card';
-
+import CartItem from './CartItem';
+import { addToCart } from '../../store/actions/action';
 import '../../styles/cart/cartpage.css'
+
 
 
 /*
@@ -16,37 +18,56 @@ if logged in then add products to users cart database from localStorage
 
 const CartPage = () => {
 
+    const dispatch = useDispatch();
     const cart = useSelector(state => state.cart);
-    const cartItems = cart.cartItems;
+    //const cartItems = cart.cartItems;
+    const [cartItems, setCartItems] = useState(cart.cartItems);
+
+    useEffect(() => {
+        setCartItems(cart.cartItems);
+    }, [cart.cartItems]);
+
+    const onQuantityIncrement = (_id, qty) => {
+        const { name, price, img} = cartItems[_id];
+        dispatch(addToCart({ _id, name, price, img }, 1));
+    }
+
+    const onQuantityDecrement = (_id, qty) => {
+        const { name, price, img} = cartItems[_id];
+        dispatch(addToCart({ _id, name, price, img }, -1));
+    }
+
+    const onQuantityChange = (_id, qty) => {
+        const { name, price, img} = cartItems[_id];
+        dispatch(addToCart({ _id, name, price, img }, qty));
+    }
+
     return (
         <Layout>
-            <div className="cartContainer">
+            <div className="cartContainer" style={{alignItems: 'flex-start'}}>
                 <Card
                     headerLeft={`My Cart`}
                     headerRight={<div>Deliver to</div>}
-                //style={{ width: "calc(100% - 400px)", overflow: "hidden" }}
+                    //style={{ width: "calc(100% - 400px)", overflow: "hidden" }}
                 >
                     {
                         Object.keys(cartItems).map((key, index) =>
-                            <div key={index} className="flexrow">
-                                <div className="cartProductContainer">
-                                    <img src="" />
-                                </div>
-                                <div className="cartItemDetails">
-                                    <div>{cartItems[key].name} Qty - {cartItems[key].qty}</div>
-                                    <div>Deliver in 3-5 days</div>
-                                </div>
-                            </div>
+                            <CartItem
+                                key={index}
+                                cartItem={cartItems[key]}
+                                onQuantityInc={onQuantityIncrement}
+                                onQuantityDec={onQuantityDecrement}
+                                onQuantityChange={onQuantityChange}
+                            />
                         )
                     }
                 </Card>
                 <Card
+                    headerLeft='Price'
                     style={{
                         width: '500px'
                     }}
-                >
-                    Price
-                </Card>
+                />
             </div>
         </Layout>
     );
