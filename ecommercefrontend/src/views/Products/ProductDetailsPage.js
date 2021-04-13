@@ -11,6 +11,7 @@ import {
 } from '../../components/derived/HeaderContent';
 import '../../styles/products/productDetails.css'
 import { generatePublicUrl } from '../../api/url';
+import { addToCart } from '../../store/actions/action';
 
 const ProductDetailsPage = (props) => {
 
@@ -64,10 +65,10 @@ const ProductDetailsPage = (props) => {
                                 }}
                                 icon={<IoMdCart />}
                                 onClick={() => {
-                                    // const { _id, name, price } = product.productDetails;
-                                    // const img = product.productDetails.productPictures[0].img;
-                                    // dispatch(addToCart({ _id, name, price, img }));
-                                    // props.history.push(`/cart`);
+                                    const { _id, name, price } = product.productDetails;
+                                    const img = product.productDetails.productPictures[0].img;
+                                    dispatch(addToCart({ _id, name, price, img }));
+                                    props.history.push(`/cart`);
                                 }}
                             />
                             <MaterialButton
