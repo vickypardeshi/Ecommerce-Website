@@ -89,6 +89,7 @@
     align-items: center;
     margin: 0 20px;
     cursor: pointer;
+    text-decoration: none;
   }
 .cart {
     font-weight: bold;

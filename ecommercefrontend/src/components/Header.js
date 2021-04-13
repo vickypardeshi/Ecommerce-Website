@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import flipkartLogo from '../images/logo/flipkart.png';
@@ -27,7 +28,9 @@ const Header = (props) => {
 
     useEffect(() => {
 
-
+        if(auth.authenticate){
+            setLoginModal(false);
+        }
 
     }, [auth.authenticate]);
 

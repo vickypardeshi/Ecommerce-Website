@@ -1,0 +1,30 @@
+.footer{
+    background-color: rgb(1, 1, 16); 
+    margin-top: 0px;
+    padding: 30px;
+}
+
+.footer ul li{
+    color: white; 
+    list-style: none; 
+    font-size: smaller; 
+    line-height: 1.5rem;
+}
+
+.footer ul h4{
+    color: white; 
+    font-size: small; 
+    opacity: 0.2;
+}
+
+.padding-top{
+    padding-top: 50px;
+}
+
+.flex{
+    display:flex
+}
+
+.space-btw{
+    justify-content:space-between;
+}
