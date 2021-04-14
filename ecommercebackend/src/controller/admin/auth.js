@@ -70,9 +70,14 @@ exports.signin = (req, res) => {
             }
             else{
                 return res.status(400).json({
-                    message: 'Invalid username/password',
+                    message: 'Something went wrong',
                 });
             }
+        }
+        else{
+            return res.status(400).json({
+                message: 'Invalid username/password ', 
+            });
         }
     });
 }

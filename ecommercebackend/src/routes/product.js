@@ -3,8 +3,13 @@ const router = express.Router();
 const multer = require('multer');
 const shortid = require('shortid');
 const path = require('path');
-const { requireSignin, adminMiddleware } = require('../common-middleware/middleware');
-const { createProduct, getProductsBySlug } = require('../controller/product');
+const {
+    requireSignin, adminMiddleware 
+} = require('../common-middleware/middleware');
+const { 
+    createProduct, getProductsBySlug, 
+    getProductsDetailsById ,
+} = require('../controller/product');
 
 //the disk storage engine gives you full control on storing files to disk.
 const storage = multer.diskStorage({
@@ -20,5 +25,6 @@ const upload = multer({ storage });
 
 router.post('/product/create', requireSignin, adminMiddleware, upload.array('productPicture'), createProduct);
 router.get('/products/:slug', getProductsBySlug);
+router.get('/product/:productId', getProductsDetailsById);
 
 module.exports = router;
