@@ -43,7 +43,7 @@ const Header = (props) => {
 
     useEffect(() => {
 
-        if(auth.authenticate){
+        if (auth.authenticate) {
             handleLoginModalClose();
         }
 
@@ -140,46 +140,46 @@ const Header = (props) => {
                         <div className="rightspace">
 
 
-
-                            <MaterialInput
-                                type="text"
-                                label="Email/Mobile Number"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                style={{
-                                    margin: "0 20px",
-                                }}
-                            />
-                            <MaterialInput
-                                type="password"
-                                label="Password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                // rightElement={ <a href="#">Forgot?</a>}
-                                style={{
-                                    margin: "0 20px",
-                                }}
-                            />
-                            <MaterialButton
-                                title={'Login'}
-                                //title={signup ? "Register" : "Login"}
-                                bgColor="#fb641b"
-                                textColor="#ffffff"
-                                style={{
-                                    margin: "40px 0 20px 0",
-                                }}
-                                onClick={userLogin}
-                            />
-                            <p style={{ textAlign: "center" }}>OR</p>
-                            <MaterialButton
-                                title="Request OTP"
-                                bgColor="#ffffff"
-                                textColor="#2874f0"
-                                style={{
-                                    margin: "20px 0",
-                                }}
-                            />
-
+                            <div className="loginInputContainer">
+                                <MaterialInput
+                                    type="text"
+                                    label="Email/Mobile Number"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    style={{
+                                        margin: "0 20px",
+                                    }}
+                                />
+                                <MaterialInput
+                                    type="password"
+                                    label="Password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    // rightElement={ <a href="#">Forgot?</a>}
+                                    style={{
+                                        margin: "0 20px",
+                                    }}
+                                />
+                                <MaterialButton
+                                    title={'Login'}
+                                    //title={signup ? "Register" : "Login"}
+                                    bgColor="#fb641b"
+                                    textColor="#ffffff"
+                                    style={{
+                                        margin: "40px 0 20px 0",
+                                    }}
+                                    onClick={userLogin}
+                                />
+                                <p style={{ textAlign: "center" }}>OR</p>
+                                <MaterialButton
+                                    title="Request OTP"
+                                    bgColor="#ffffff"
+                                    textColor="#2874f0"
+                                    style={{
+                                        margin: "20px 0",
+                                    }}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -224,9 +224,9 @@ const Header = (props) => {
                 <div className="rightMenu">
                     {
                         auth.authenticate
-                        ?
+                            ?
                             renderLoggedInMenu()
-                        :
+                            :
                             renderNonLoggedInMenu()
                     }
                     <DropdownMenu
@@ -245,7 +245,7 @@ const Header = (props) => {
                         ]}
                     />
                     <div>
-                        <a className="cart">
+                        <a href={`/cart`} className="cart">
                             <IoIosCart />
                             <span style={{ margin: "0 10px" }}>Cart</span>
                         </a>

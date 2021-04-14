@@ -4,6 +4,8 @@ import Layout from '../../components/Layout';
 import Card from '../../components/common/Card';
 import CartItem from './CartItem';
 import { addToCart, getCartItems } from '../../store/actions/action';
+import { MaterialButton } from '../../components/derived/HeaderContent';
+import PriceDetails from './PriceDetails';
 import '../../styles/cart/cartpage.css'
 
 
@@ -16,7 +18,7 @@ when try to checkout ask for credentials and
 if logged in then add products to users cart database from localStorage
 */
 
-const CartPage = () => {
+const CartPage = (props) => {
 
     const cart = useSelector(state => state.cart);
     const auth = useSelector(state => state.auth);
@@ -30,33 +32,51 @@ const CartPage = () => {
     }, [cart.cartItems]);
 
     useEffect(() => {
-        if(auth.authenticate){
+        if (auth.authenticate) {
             dispatch(getCartItems());
         }
     }, [auth.authenticate, dispatch]);
 
     const onQuantityIncrement = (_id, qty) => {
-        const { name, price, img} = cartItems[_id];
+        const { name, price, img } = cartItems[_id];
         dispatch(addToCart({ _id, name, price, img }, 1));
     }
 
     const onQuantityDecrement = (_id, qty) => {
-        const { name, price, img} = cartItems[_id];
+        const { name, price, img } = cartItems[_id];
         dispatch(addToCart({ _id, name, price, img }, -1));
     }
 
     const onQuantityChange = (_id, qty) => {
-        const { name, price, img} = cartItems[_id];
+        const { name, price, img } = cartItems[_id];
         dispatch(addToCart({ _id, name, price, img }, qty));
+    }
+
+    if (props.onlyCartItems) {
+        return (
+            <>
+                {
+                    Object.keys(cartItems).map((key, index) =>
+                        <CartItem
+                            key={index}
+                            cartItem={cartItems[key]}
+                            onQuantityInc={onQuantityIncrement}
+                            onQuantityDec={onQuantityDecrement}
+                            onQuantityChange={onQuantityChange}
+                        />
+                    )
+                }
+            </>
+        );
     }
 
     return (
         <Layout>
-            <div className="cartContainer" style={{alignItems: 'flex-start'}}>
+            <div className="cartContainer" style={{ alignItems: 'flex-start' }}>
                 <Card
                     headerLeft={`My Cart`}
                     headerRight={<div>Deliver to</div>}
-                    //style={{ width: "calc(100% - 400px)", overflow: "hidden" }}
+                    style={{ width: "calc(100% - 400px)", overflow: "hidden" }}
                 >
                     {
                         Object.keys(cartItems).map((key, index) =>
@@ -69,12 +89,33 @@ const CartPage = () => {
                             />
                         )
                     }
+                    <div
+                        style={{
+                            width: "100%",
+                            display: "flex",
+                            background: "#ffffff",
+                            justifyContent: "flex-end",
+                            boxShadow: "0 0 10px 10px #eee",
+                            padding: "10px 0",
+                            boxSizing: "border-box",
+                        }}
+                    >
+                        <div style={{ width: "250px" }}>
+                            <MaterialButton
+                                title="PLACE ORDER"
+                                onClick={() => props.history.push(`/checkout`)}
+                            />
+                        </div>
+                    </div>
                 </Card>
-                <Card
-                    headerLeft='Price'
-                    style={{
-                        width: '500px'
-                    }}
+                <PriceDetails
+                    totalItem={Object.keys(cart.cartItems).reduce(function (qty, key) {
+                        return qty + cart.cartItems[key].qty;
+                    }, 0)}
+                    totalPrice={Object.keys(cart.cartItems).reduce((totalPrice, key) => {
+                        const { price, qty } = cart.cartItems[key];
+                        return totalPrice + price * qty;
+                    }, 0)}
                 />
             </div>
         </Layout>

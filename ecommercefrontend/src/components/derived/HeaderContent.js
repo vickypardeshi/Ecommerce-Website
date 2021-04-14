@@ -67,11 +67,11 @@ const MaterialButton = (props) => {
     const onClick = () => {
         props.onClick && props.onClick();
     }
-    
+
     return (
         <div
             style={{
-                width: "90%",
+                width: "100%",
                 ...props.style
             }}
         >
@@ -101,12 +101,12 @@ const DropdownMenu = (props) => {
                     {props.menus &&
                         props.menus.map((item, index) => (
                             <li key={index}>
-                                <a  onClick={(e) => {
-                                        if(item.onClick) {
-                                            e.preventDefault();
-                                            item.onClick && item.onClick();
-                                        }
-                                    }}
+                                <a onClick={(e) => {
+                                    if (item.onClick) {
+                                        e.preventDefault();
+                                        item.onClick && item.onClick();
+                                    }
+                                }}
                                     href={`${item.href}`}
                                 >
                                     {item.label}
@@ -119,9 +119,35 @@ const DropdownMenu = (props) => {
     );
 };
 
+const Anchor = (props) => {
+    return (
+        <button {...props} className="anchorButton">
+            {props.name}
+        </button>
+    );
+};
+
+const Breed = (props) => {
+    return (
+        <div className="breed">
+            <ul>
+                {props.breed &&
+                    props.breed.map((item, index) => (
+                        <li key={index}>
+                            <a href={item.href}>{item.name}</a>
+                            {props.breedIcon}
+                        </li>
+                    ))}
+            </ul>
+        </div>
+    );
+};
+
 export {
     Modal,
     MaterialInput,
     MaterialButton,
     DropdownMenu,
+    Anchor,
+    Breed,
 };
