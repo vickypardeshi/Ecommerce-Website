@@ -1,5 +1,9 @@
 import axios from '../../api/axios';
-import { categoryConstants, productConstants } from "./constants";
+import {
+    categoryConstants, 
+    orderConstants, 
+    productConstants, 
+} from "./constants";
 
 export const getInitialData = () => {
     return async dispatch => {
@@ -10,10 +14,13 @@ export const getInitialData = () => {
         dispatch({
             type: productConstants.GET_ALL_PRODUCTS_REQUEST,
         });
+        dispatch({
+            type: orderConstants.GET_CUSTOMER_ORDER_REQUEST,
+        });
 
         const res = await axios.post('/initialData');
         if(res.status === 200){
-            const { categories, products} = res.data;
+            const { categories, products, orders} = res.data;
             dispatch({
                 type: categoryConstants.GET_ALL_CATEGORIES_SUCCESS,
                 payload: { categories}
@@ -22,6 +29,10 @@ export const getInitialData = () => {
                 type: productConstants.GET_ALL_PRODUCTS_SUCCESS,
                 payload: { products }
             });
+            dispatch({
+                type: orderConstants.GET_CUSTOMER_ORDER_SUCCESS,
+                payload: { orders }
+            });
         }
         else{
             dispatch({
@@ -29,6 +40,9 @@ export const getInitialData = () => {
             });
             dispatch({
                 type: productConstants.GET_ALL_PRODUCTS_FAILURE,
+            });
+            dispatch({
+                type: orderConstants.GET_CUSTOMER_ORDER_FAILURE,
             });
         }
         console.log(res);
