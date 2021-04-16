@@ -1,5 +1,6 @@
 const Category = require('../../models/category');
 const Product = require('../../models/product');
+const Order = require('../../models/order');
 
 function getCategoriesList(categories, parentId=null){
     const categoryList = [];
@@ -26,7 +27,6 @@ function getCategoriesList(categories, parentId=null){
 }
 
 exports.initialData = async (req, res) => {
-
     const categories = await Category.find({}).exec();
     const products = await Product.find({})
         .select('_id name price quantity slug description productPictures category')
@@ -35,9 +35,12 @@ exports.initialData = async (req, res) => {
             select: '_id name'
         }) //belong to diff collection & it will fill the relavent data
         .exec();  //channing used
-        
+    const orders = await Order.find({})
+    .populate("items.productId", "name")
+    .exec();    
     res.status(200).json({
         categories: getCategoriesList(categories),
-        products
+        products,
+        orders,
     });
 }

@@ -4,10 +4,11 @@ const {
     userMiddleware, 
 } = require('../common-middleware/middleware');
 const { 
-    addOrder, getOrders,
+    addOrder, getOrders, getOrder,
 } = require('../controller/order');
 
 router.post("/addorder", requireSignin, userMiddleware, addOrder);
 router.get("/getorders", requireSignin, userMiddleware, getOrders);
+router.get("/getorder", requireSignin, userMiddleware, getOrder);
 
 module.exports = router;

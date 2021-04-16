@@ -50,12 +50,14 @@ exports.signin = (req, res) => {
     User.findOne({
         email: req.body.email
     })
-    .exec((error, user) => {
+    .exec(async (error, user) => {
         if(error){
             return res.status(400).json({ error });
         }
         if(user){
-            if(user.authenticate(req.body.password) && user.role === 'admin'){
+            const checkPassword = await user.authenticate(req.body.password);
+            
+            if(checkPassword && user.role === 'admin'){
                 const token = jwt.sign({_id: user._id, role: user.role}, process.env.JWT_SECREAT, {expiresIn: '1d'});
                 const { 
                     _id, firstName, lastName, email, role, fullName 
