@@ -9,6 +9,6 @@ const {
 
 router.post("/addorder", requireSignin, userMiddleware, addOrder);
 router.get("/getorders", requireSignin, userMiddleware, getOrders);
-router.get("/getorder", requireSignin, userMiddleware, getOrder);
+router.post("/getorder", requireSignin, userMiddleware, getOrder);
 
 module.exports = router;

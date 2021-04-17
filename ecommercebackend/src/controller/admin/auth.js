@@ -58,7 +58,7 @@ exports.signin = (req, res) => {
             const checkPassword = await user.authenticate(req.body.password);
             
             if(checkPassword && user.role === 'admin'){
-                const token = jwt.sign({_id: user._id, role: user.role}, process.env.JWT_SECREAT, {expiresIn: '1d'});
+                const token = jwt.sign({_id: user._id, role: user.role}, process.env.JWT_SECRET, {expiresIn: '1d'});
                 const { 
                     _id, firstName, lastName, email, role, fullName 
                 } = user;

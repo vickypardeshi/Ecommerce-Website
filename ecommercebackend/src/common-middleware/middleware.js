@@ -18,7 +18,7 @@ exports.upload = multer({ storage });
 exports.requireSignin = (req, res, next) => {
     if(req.headers.authorization){
         const token = req.headers.authorization.split(" ")[1];
-        const user = jwt.verify(token, process.env.JWT_SECREAT);
+        const user = jwt.verify(token, process.env.JWT_SECRET);
         req.user = user  //attach user in the request, so we can access user in next() 
         next();
     }
