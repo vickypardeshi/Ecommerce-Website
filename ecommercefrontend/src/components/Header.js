@@ -3,14 +3,22 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import flipkartLogo from '../images/logo/flipkart.png';
 import goldenStar from '../images/logo/golden-star.png';
-import { IoIosArrowDown, IoIosCart, IoIosSearch } from "react-icons/io";
+import {
+    IoIosArrowDown, IoIosCart,
+    IoIosSearch
+} from "react-icons/io";
 import {
     Modal,
     MaterialInput,
     MaterialButton,
     DropdownMenu,
 } from '../components/derived/HeaderContent';
-import { login, signout } from '../store/actions/action';
+import {
+    getCartItems,
+    login, signout,
+    signup as usersignup
+} from '../store/actions/action';
+import Cart from '../components/common/Cart';
 import '../styles/header.css'
 
 
@@ -23,6 +31,7 @@ const Header = (props) => {
     const [password, setPassword] = useState('');
 
     const auth = useSelector(state => state.auth);
+    const cart = useSelector((state) => state.cart);
     const dispatch = useDispatch();
 
     const handleLoginModalClose = () => {
@@ -36,16 +45,37 @@ const Header = (props) => {
         setLoginModal(true);
     }
 
+    const userSignup = () => {
+        const user = { firstName, lastName, email, password };
+        console.log(user);
+        if (
+            firstName === ""
+            || lastName === ""
+            || email === ""
+            || password === "" 
+        ) {
+            return;
+        }
+
+        dispatch(usersignup(user));
+    }
+
     const userLogin = () => {
-        dispatch(login({ email, password }));
+        if (signup) {
+            userSignup();
+        } else {
+            dispatch(login({ email, password }));
+        }
     }
 
     const logout = () => {
+        console.log(props);
         dispatch(signout());
         setFirstName('');
         setLastName('');
         setEmail('');
         setPassword('');
+        console.log(props.history);
     }
 
     useEffect(() => {
@@ -55,6 +85,10 @@ const Header = (props) => {
         }
 
     }, [auth.authenticate]);
+
+    useEffect(() => {
+        dispatch(getCartItems());
+    }, [dispatch]);
 
     const renderLoggedInMenu = () => {
         return (
@@ -79,7 +113,7 @@ const Header = (props) => {
                     { label: "Rewards", href: "", icon: null },
                     { label: "Notifications", href: "", icon: null },
                     { label: "Gift Cards", href: "", icon: null },
-                    { label: "Logout", href: "", icon: null, onClick: logout },
+                    { label: "Logout", href: "", icon: null, onClick:  logout },
                 ]}
             />
         );
@@ -186,7 +220,7 @@ const Header = (props) => {
                                     style={{
                                         margin: "40px 0 20px 0",
                                     }}
-                                    onClick={!signup && userLogin}
+                                    onClick={userLogin}
                                 />
                                 <p style={{ textAlign: "center" }}>OR</p>
                                 <MaterialButton
@@ -264,7 +298,13 @@ const Header = (props) => {
                     />
                     <div>
                         <a href={`/cart`} className="cart">
-                            <IoIosCart />
+                            {
+                                Object.keys(cart.cartItems).length > 0
+                                    ?
+                                    <Cart count={Object.keys(cart.cartItems).length} />
+                                    :
+                                    <IoIosCart />
+                            }
                             <span style={{ margin: "0 10px" }}>Cart</span>
                         </a>
                     </div>

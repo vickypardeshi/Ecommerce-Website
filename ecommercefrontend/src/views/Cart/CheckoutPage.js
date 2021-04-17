@@ -186,10 +186,11 @@ const CheckoutPage = (props) => {
   }, [user.address]);
 
   useEffect(() => {
+    console.log(confirmOrder, user.placedOrderId, );
     if (confirmOrder && user.placedOrderId) {
       props.history.push(`/order_details/${user.placedOrderId}`);
     }
-  }, [confirmOrder, props.history, user.placedOrderId]);
+  }, [confirmOrder, dispatch, props.history, user.placedOrderId]);
 
   return (
     <Layout>

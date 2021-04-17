@@ -76,14 +76,36 @@ export const addToCart = (product, newQty = 1) => {
     };
 };
 
+export const removeCartItem = (payload) => {
+    return async (dispatch) => {
+        try {
+            dispatch({ type: cartConstants.REMOVE_CART_ITEM_REQUEST});
+            const res = await axios.post(`/user/cart/removeitem`, { payload });
+            if (res.status === 202) {
+                dispatch({ type: cartConstants.REMOVE_CART_ITEM_SUCCESS });
+                dispatch(getCartItems());
+            } else {
+                const { error } = res.data;
+                dispatch({
+                    type: cartConstants.REMOVE_CART_ITEM_FAILURE,
+                    payload: { error },
+                });
+            }
+        } catch (error) {
+            dispatch({
+                type: cartConstants.REMOVE_CART_ITEM_FAILURE,
+                payload: { error },
+            });
+        }
+    };
+};
+
 export const updateCart = () => {
     return async (dispatch) => {
         const { auth } = store.getState();
         let cartItems = localStorage.getItem("cart")
             ? JSON.parse(localStorage.getItem("cart"))
             : null;
-
-        console.log("upppppppppp");
 
         if (auth.authenticate) {
             localStorage.removeItem("cart");

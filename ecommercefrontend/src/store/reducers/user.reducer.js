@@ -6,6 +6,7 @@ const initState = {
     address: [],
     orders: [],
     orderDetails: [],
+    placedOrderId: null,
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -90,6 +91,12 @@ export default (state = initState, action) => {
                 loading: false,
                 error: action.payload.error,
             }
+            break;
+        case userConstants.ADD_USER_ORDER_SUCCESS:
+            state = {
+                ...state,
+                placedOrderId: action.payload.order._id,
+            };
             break;
         default:
             return state;

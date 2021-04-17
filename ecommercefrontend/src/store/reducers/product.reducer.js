@@ -4,14 +4,8 @@ const initState = {
     loading: false,
     error: '',
     products: [],
-    productsByPrice: {
-        under5k: [],
-        under10k: [],
-        under15: [],
-        under20k: [],
-        under25k: [],
-    },
-
+    priceRange: {},
+    productsByPrice: {},
     productDetails: {},
 }
 
@@ -29,6 +23,7 @@ export default (state = initState, action) => {
                 ...state,
                 loading: false,
                 products: action.payload.products,
+                priceRange: action.payload.priceRange,
                 productsByPrice: {
                     ...action.payload.productsByPrice
                 }
