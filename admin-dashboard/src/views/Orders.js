@@ -3,10 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateOrder } from '../store/actions/action';
 import Layout from '../components/Layout';
 import Card from '../components/common/Card';
-
 import '../styles/order.css';
-
-
 
 const Orders = (props) => {
     const order = useSelector((state) => state.order);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -20,10 +20,18 @@ const Signup = (props) => {
     const user = useSelector(state => state.user);
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        if (!user.loading) {
+          setFirstName("");
+          setLastName("");
+          setEmail("");
+          setPassword("");
+        }
+      }, [user.loading]);
+
+      
     const userSignup = (e) => {
-
         e.preventDefault();
-
         const user = {
             firstName,
             lastName,

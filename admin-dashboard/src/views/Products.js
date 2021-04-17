@@ -5,7 +5,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import Layout from '../components/Layout';
 import FormInput from '../components/common/FormInput';
-import { addProduct } from '../store/actions/action';
+import { addProduct, deleteProductById } from '../store/actions/action';
 import CustomModal from '../components/common/CustomModal';
 import '../styles/product.css'
 import { generatePublicUrl } from '../api/url';
@@ -120,20 +120,6 @@ const Products = () => {
                 placeholder={'Product Description'}
                 onChange={(e) => setDescription(e.target.value)}
             />
-            {/* <select
-                className="form-control"
-                value={categoryId}
-                onChange={(e) => setCategoryId(e.target.value)}
-            >
-                <option>Select Category</option>
-                {
-                    createCategoryList(category.categories).map(option =>
-                        <option key={option.value} value={option.value}>
-                            {option.name}
-                        </option>
-                    )
-                }
-            </select> */}
             <FormInput
                 inputType="select"
                 placeholder={'Select Category'}
@@ -223,15 +209,27 @@ const Products = () => {
                     {
                         product.products.length > 0 ?
                             product.products.map((product =>
-                                <tr onClick={() => {
-                                    showProductDetailsModal(product)
-                                }} key={product._id}>
+                                <tr key={product._id}>
                                     <td>#</td>
                                     <td>{product.name}</td>
                                     <td>{product.price}</td>
                                     <td>{product.quantity}</td>
-                                    <td>--</td>
-                                    {/* <td>{product.category.name}</td> */}
+                                    <td>{product.category.name}</td>
+                                    <td>
+                                        <button onClick={() => showProductDetailsModal(product)}>
+                                            info
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                const payload = {
+                                                    productId: product._id,
+                                                };
+                                                dispatch(deleteProductById(payload));
+                                            }}
+                                        >
+                                            del
+                                        </button>
+                                    </td>
                                 </tr>
                             ))
                             : null
