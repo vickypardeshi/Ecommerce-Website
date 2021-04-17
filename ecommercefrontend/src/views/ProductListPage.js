@@ -1,6 +1,7 @@
 import React from 'react';
 import Layout from '../components/Layout';
 import { getParams } from '../utilities/Utils';
+import ClothingAndAccessories from './Products/ClothingAndAccessories';
 import ProductPage from './Products/ProductPage';
 import ProductStore from './Products/ProductStore';
 
@@ -17,7 +18,7 @@ const ProductListPage = (props) => {
                 content = <ProductPage {...props} />;
                 break;
             default:
-                content = null;
+                content = <ClothingAndAccessories {...props} />;
                 break;
         }
         return content;

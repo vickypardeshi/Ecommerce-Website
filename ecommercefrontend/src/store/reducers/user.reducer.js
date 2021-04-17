@@ -5,7 +5,7 @@ const initState = {
     error: null,
     address: [],
     orders: [],
-    ordersFetching: false,
+    orderDetails: [],
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -54,20 +54,40 @@ export default (state = initState, action) => {
         case userConstants.GET_USER_ORDER_REQUEST:
             state = {
                 ...state,
-                ordersFetching: true,
+                loading: true,
             }
             break;
         case userConstants.GET_USER_ORDER_SUCCESS:
             state = {
                 ...state,
-                ordersFetching: false,
+                loading: false,
                 orders: action.payload.orders,
             }
             break;
         case userConstants.GET_USER_ORDER_FAILURE:
             state = {
                 ...state,
-                ordersFetching: false,
+                loading: false,
+                error: action.payload.error,
+            }
+            break;
+        case userConstants.GET_USER_ORDER_DETAILS_REQUEST:
+            state = {
+                ...state,
+                loading: true,
+            }
+            break;
+        case userConstants.GET_USER_ORDER_DETAILS_SUCCESS:
+            state = {
+                ...state,
+                loading: false,
+                orderDetails: action.payload.order,
+            }
+            break;
+        case userConstants.GET_USER_ORDER_DETAILS_FAILURE:
+            state = {
+                ...state,
+                loading: false,
                 error: action.payload.error,
             }
             break;

@@ -16,6 +16,9 @@ import '../styles/header.css'
 
 const Header = (props) => {
     const [loginModal, setLoginModal] = useState(false);
+    const [signup, setSignup] = useState(false);
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -24,6 +27,8 @@ const Header = (props) => {
 
     const handleLoginModalClose = () => {
         setLoginModal(false);
+        setFirstName('');
+        setLastName('');
         setEmail('');
         setPassword('');
     }
@@ -37,6 +42,8 @@ const Header = (props) => {
 
     const logout = () => {
         dispatch(signout());
+        setFirstName('');
+        setLastName('');
         setEmail('');
         setPassword('');
     }
@@ -85,7 +92,7 @@ const Header = (props) => {
                     <a
                         className="loginButton"
                         onClick={() => {
-                            //setSignup(false);
+                            setSignup(false);
                             handleLoginModalShow();
                         }}
                     >
@@ -113,7 +120,7 @@ const Header = (props) => {
                         <a
                             onClick={() => {
                                 handleLoginModalShow();
-                                //setSignup(true);
+                                setSignup(true);
                             }}
                             style={{ color: "#2874f0" }}
                         >
@@ -138,37 +145,48 @@ const Header = (props) => {
                             <p>Get access to your Orders, Wishlist and Recommendations</p>
                         </div>
                         <div className="rightspace">
-
-
                             <div className="loginInputContainer">
+                                {/* {auth.error && (
+                                    <div style={{ color: "red", fontSize: 12 }}>{auth.error}</div>
+                                )} */}
+                                {signup && (
+                                    <MaterialInput
+                                        type="text"
+                                        label="First Name"
+                                        value={firstName}
+                                        onChange={(e) => setFirstName(e.target.value)}
+                                    />
+                                )}
+                                {signup && (
+                                    <MaterialInput
+                                        type="text"
+                                        label="Last Name"
+                                        value={lastName}
+                                        onChange={(e) => setLastName(e.target.value)}
+                                    />
+                                )}
+
                                 <MaterialInput
                                     type="text"
                                     label="Email/Mobile Number"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    style={{
-                                        margin: "0 20px",
-                                    }}
                                 />
                                 <MaterialInput
                                     type="password"
                                     label="Password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    // rightElement={ <a href="#">Forgot?</a>}
-                                    style={{
-                                        margin: "0 20px",
-                                    }}
+                                // rightElement={<a href="#">Forgot?</a>}
                                 />
                                 <MaterialButton
-                                    title={'Login'}
-                                    //title={signup ? "Register" : "Login"}
+                                    title={signup ? "Register" : "Login"}
                                     bgColor="#fb641b"
                                     textColor="#ffffff"
                                     style={{
                                         margin: "40px 0 20px 0",
                                     }}
-                                    onClick={userLogin}
+                                    onClick={!signup && userLogin}
                                 />
                                 <p style={{ textAlign: "center" }}>OR</p>
                                 <MaterialButton
