@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
 import {
-    Container, Row, Col, Table
+    Container, Row, Col, Table, 
+    Spinner, Button
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Layout from '../components/Layout';
 import FormInput from '../components/common/FormInput';
-import { addProduct, deleteProductById } from '../store/actions/action';
+import { 
+    addProduct, deleteProductById, 
+    getInitialData,
+} from '../store/actions/action';
 import CustomModal from '../components/common/CustomModal';
-import '../styles/product.css'
 import { generatePublicUrl } from '../api/url';
+import ErrorHandler from '../components/common/ErrorHandler';
+import '../styles/product.css'
+
 
 const Products = () => {
 
@@ -25,6 +31,7 @@ const Products = () => {
 
     const category = useSelector(state => state.category);
     const product = useSelector(state => state.product);
+    const { loading, error } = product;
 
     const dispatch = useDispatch();
 
@@ -49,6 +56,11 @@ const Products = () => {
     }
 
     const handleSubmit = () => {
+        if(name === ''){
+            //alert('Name required');
+            setShow(false);
+            return;
+        }
         const form = new FormData();
         form.append('name', name);
         form.append('quantity', quantity);
@@ -92,6 +104,10 @@ const Products = () => {
             }
         }
         return options;
+    }
+
+    const retryLogic = () => {
+        dispatch(getInitialData());
     }
 
     const createNewProductBody = (
@@ -198,11 +214,12 @@ const Products = () => {
             <Table className="table" responsive="sm">
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th>Id</th>
                         <th>Name</th>
                         <th>Price</th>
                         <th>Quantity</th>
                         <th>Category</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -216,10 +233,23 @@ const Products = () => {
                                     <td>{product.quantity}</td>
                                     <td>{product.category.name}</td>
                                     <td>
-                                        <button onClick={() => showProductDetailsModal(product)}>
-                                            info
-                                        </button>
-                                        <button
+                                        <Button
+                                            onClick={() => {
+                                                showProductDetailsModal(product)
+                                            }}
+                                        >
+                                            VIEW
+                                        </Button>
+                                        {/* <Button 
+                                            onClick={() => {
+                                                showProductDetailsModal(product)
+                                            }}
+                                        >
+                                            EDIT
+                                        </Button>
+                                        &nbsp; */}
+                                        <Button
+                                            className="mx-1" 
                                             onClick={() => {
                                                 const payload = {
                                                     productId: product._id,
@@ -227,8 +257,8 @@ const Products = () => {
                                                 dispatch(deleteProductById(payload));
                                             }}
                                         >
-                                            del
-                                        </button>
+                                            DELETE
+                                        </Button>
                                     </td>
                                 </tr>
                             ))
@@ -239,18 +269,54 @@ const Products = () => {
         );
     }
 
+    if (loading) {
+        return (
+            <Layout sidebar>
+                <Container>
+                    <Row>
+                        <Col
+                            className="text-center py-3"
+                        >
+                            <Spinner
+                                variant="primary"
+                                animation="border"
+                            />
+                        </Col>
+                    </Row>
+                </Container>
+            </Layout>
+
+        );
+    }
+
+    if(error){
+        return(
+            <Layout sidebar>
+                <ErrorHandler
+                    retryLogic={retryLogic} 
+                    //errorMessage={error.message}
+                />
+            </Layout>
+        );
+    }
+
     return (
         <Layout sidebar>
             <Container>
-                <Row>
+                <Row className="my-2">
                     <Col md={12}>
                         <div className="product">
                             <h3>Products</h3>
-                            <button onClick={handleShow}>Add</button>
+                            <Button
+                                className="mx-2 fs-1 "
+                                onClick={handleShow}
+                            >
+                                Add Product
+                            </Button>
                         </div>
                     </Col>
                 </Row>
-                <Row>
+                <Row className="my-3">
                     <Col>
                         {renderProducts()}
                     </Col>

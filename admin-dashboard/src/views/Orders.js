@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateOrder } from '../store/actions/action';
+import {
+    Col, Container, Row,
+    Spinner, Button,
+} from 'react-bootstrap';
+import { getInitialData, updateOrder } from '../store/actions/action';
 import Layout from '../components/Layout';
 import Card from '../components/common/Card';
+import ErrorHandler from '../components/common/ErrorHandler';
 import '../styles/order.css';
+
 
 const Orders = (props) => {
     const order = useSelector((state) => state.order);
+    const { loading, error } = order;
+
     const [type, setType] = useState("");
     const dispatch = useDispatch();
 
@@ -26,15 +34,74 @@ const Orders = (props) => {
         return "";
     };
 
+    const formatDate2 = (date) => {
+        const month = [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "June",
+          "July",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ];
+        if (date) {
+          const d = new Date(date);
+          return `${month[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+        }
+      };
+
+    const retryLogic = () => {
+        dispatch(getInitialData());
+    }
+
+    if (loading) {
+        return (
+            <Layout sidebar>
+                <Container>
+                    <Row>
+                        <Col
+                            className="text-center py-3"
+                        >
+                            <Spinner
+                                variant="primary"
+                                animation="border"
+                            />
+                        </Col>
+                    </Row>
+                </Container>
+            </Layout>
+
+        );
+    }
+
+    if (error) {
+        return (
+            <Layout sidebar>
+                <ErrorHandler
+                    retryLogic={retryLogic}
+                //errorMessage={error.message}
+                />
+            </Layout>
+        );
+    }
+
     return (
         <Layout sidebar>
+            <div>
+                <h3>Orders</h3>
+            </div>
             {order.orders.map((orderItem, index) => (
                 <Card
                     style={{
                         margin: "10px 0",
                     }}
                     key={index}
-                    headerLeft={orderItem._id}
+                    headerleft={orderItem._id}
                 >
                     <div
                         style={{
@@ -69,7 +136,7 @@ const Orders = (props) => {
                     <div
                         style={{
                             boxSizing: "border-box",
-                            padding: "50px",
+                            padding: "50px 65px",
                             display: "flex",
                             alignItems: "center",
                         }}
@@ -98,20 +165,27 @@ const Orders = (props) => {
                                 boxSizing: "border-box",
                             }}
                         >
-                            <select onChange={(e) => setType(e.target.value)}>
-                                <option value={""}>select status</option>
-                                {orderItem.orderStatus.map((status) => {
-                                    return (
-                                        <>
-                                            {!status.isCompleted ? (
-                                                <option key={status.type} value={status.type}>
-                                                    {status.type}
-                                                </option>
-                                            ) : null}
-                                        </>
-                                    );
-                                })}
-                            </select>
+                            {!orderItem.orderStatus[3].isCompleted ?
+                                <select
+                                    className="form-control"
+                                    onChange={(e) => setType(e.target.value)}
+                                >
+                                    <option value={""}>select status</option>
+                                    {orderItem.orderStatus.map((status) => {
+                                        return (
+                                            <>
+                                                {!status.isCompleted ? (
+                                                    <option key={status.type} value={status.type}>
+                                                        {status.type}
+                                                    </option>
+                                                ) : null}
+                                            </>
+                                        );
+                                    })}
+                                </select>
+                                
+                                : `Order Delivered on ${formatDate2(orderItem.orderStatus[3].date)}`
+                            }
                         </div>
                         {/* button to confirm action */}
 
@@ -121,9 +195,14 @@ const Orders = (props) => {
                                 boxSizing: "border-box",
                             }}
                         >
-                            <button onClick={() => onOrderUpdate(orderItem._id)}>
-                                confirm
-                            </button>
+                            {!orderItem.orderStatus[3].isCompleted &&
+                                <Button 
+                                    onClick={() => onOrderUpdate(orderItem._id)}
+                                    disabled={!type}
+                                >
+                                    Confirm
+                                </Button>
+                            }
                         </div>
                     </div>
                 </Card>

@@ -1,23 +1,26 @@
 import React, { useState } from 'react';
 import {
     Col, Container, Row,
-    Spinner
+    Spinner, Button,
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import CheckboxTree from 'react-checkbox-tree';
-import FormInput from '../components/common/FormInput';
-import Layout from '../components/Layout';
-import {
-    addCategory, deleteCategories,
-    getAllCategory, updateCategories,
-} from '../store/actions/action';
-import CustomModal from '../components/common/CustomModal';
 import {
     IoIosCheckboxOutline, IoIosCheckbox,
     IoIosArrowForward, IoIosArrowDown,
     IoIosTrash, IoIosAdd, IoIosCloudUpload,
 } from 'react-icons/io';
 import 'react-checkbox-tree/lib/react-checkbox-tree.css';
+import FormInput from '../components/common/FormInput';
+import Layout from '../components/Layout';
+import {
+    addCategory, deleteCategories,
+    getAllCategory,
+    getInitialData,
+    updateCategories,
+} from '../store/actions/action';
+import CustomModal from '../components/common/CustomModal';
+import ErrorHandler from '../components/common/ErrorHandler';
 import '../styles/category.css'
 
 const Category = () => {
@@ -31,12 +34,12 @@ const Category = () => {
     const [expanded, setExpanded] = useState([]);
     const [checkedArray, setCheckedArray] = useState([]);
     const [expandedArray, setExpandedArray] = useState([]);
-    const [showUpdatedCategory, setShowUpdatedCategory] = useState(false);
 
+    const [showUpdatedCategory, setShowUpdatedCategory] = useState(false);
     const [showDeleteCategory, setShowDeleteCategory] = useState(false);
 
     const category = useSelector(state => state.category);
-    const { loading } = category;
+    const { loading, error } = category;
 
     const dispatch = useDispatch();
 
@@ -55,13 +58,15 @@ const Category = () => {
     }
 
     const handleSubmit = () => {
-
         const form = new FormData();
-
+        if (categoryName === "") {
+            //alert('Category name is required');
+            setShow(false);
+            return;
+        }
         form.append('name', categoryName);
         form.append('parentId', parentCategoryId);
         form.append('categoryImage', categoryImage);
-
         dispatch(addCategory(form));
 
         setCategoryName('');
@@ -92,7 +97,6 @@ const Category = () => {
 
         setCheckedArray(checkedArray);
         setExpandedArray(expandedArray);
-        console.log({ checked, expanded, checkedArray, expandedArray });
     }
 
     const handleUpdatedCategoryShow = () => {
@@ -106,7 +110,6 @@ const Category = () => {
 
     const handleUpdatedCategory = () => {
         const form = new FormData();
-
         expandedArray.forEach((item, index) => {
             form.append('_id', item.value);
             form.append('name', item.name);
@@ -119,7 +122,6 @@ const Category = () => {
             form.append('type', item.type);
             form.append('parentId', item.parentId ? item.parentId : "");
         });
-
         dispatch(updateCategories(form));
 
         setExpandedArray([]);
@@ -154,7 +156,6 @@ const Category = () => {
         const checkedIdsArray = checkedArray.map(item => ({
             _id: item.value
         }));
-
         if (checkedIdsArray.length > 0) {
             dispatch(deleteCategories(checkedIdsArray))
                 .then(result => {
@@ -163,7 +164,6 @@ const Category = () => {
                     }
                 })
         }
-
 
         setExpandedArray([]);
         setCheckedArray([]);
@@ -201,6 +201,10 @@ const Category = () => {
         return options;
     }
 
+    const retryLogic = () => {
+       dispatch(getInitialData());
+    }
+
     const addCategoryBody = (
         <>
             <Row>
@@ -230,9 +234,6 @@ const Category = () => {
                     />
                 </Col>
             </Row>
-
-
-
         </>
     );
 
@@ -352,58 +353,71 @@ const Category = () => {
         </>
     );
 
+    if (loading) {
+        return (
+            <Layout sidebar>
+                <Container>
+                    <Row>
+                        <Col
+                            className="text-center py-3"
+                        >
+                            <Spinner
+                                variant="primary"
+                                animation="border"
+                            />
+                        </Col>
+                    </Row>
+                </Container>
+            </Layout>
+
+        );
+    }
+
+    if(error){
+        return(
+            <Layout sidebar>
+                <ErrorHandler
+                    retryLogic={retryLogic} 
+                    //errorMessage={error.message}
+                />
+            </Layout>
+        );
+    }
+
     return (
         <Layout sidebar>
             <Container>
-                {
-                    loading ?
-                        <>
-                            <Row>
-                                <Col
-                                    className="text-center py-3"
-                                >
-                                    <Spinner
-                                        variant="primary"
-                                        animation="border"
-                                    />
-                                </Col>
-                            </Row>
-                        </>
-                        :
-                        <>
-                            <Row>
-                                <Col md={12}>
-                                    <div className="category">
-                                        <h3>Category</h3>
-                                        <div className="buttonContainer">
-                                            <span>Actions: </span>
-                                            <button onClick={handleShow}><IoIosAdd /> <span>Add</span> </button>
-                                            <button onClick={handleDeleteCategoryShow}><IoIosTrash /> <span>Delete</span></button>
-                                            <button onClick={handleUpdatedCategoryShow}><IoIosCloudUpload /> <span>Edit</span></button>
-                                        </div>
-                                    </div>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col md={12}>
-                                    <CheckboxTree
-                                        nodes={renderCategories(category.categories)}
-                                        checked={checked}
-                                        expanded={expanded}
-                                        onCheck={checked => setChecked(checked)}
-                                        onExpand={expanded => setExpanded(expanded)}
-                                        icons={{
-                                            check: <IoIosCheckbox />,
-                                            uncheck: <IoIosCheckboxOutline />,
-                                            halfCheck: <IoIosCheckboxOutline />,
-                                            expandClose: <IoIosArrowForward />,
-                                            expandOpen: <IoIosArrowDown />,
-                                        }}
-                                    />
-                                </Col>
-                            </Row>
-                        </>
-                }
+                <Row className="my-1">
+                    <Col md={12}>
+                        <div className="category">
+                            <h3>Category</h3>
+                            <div className="buttonContainer">
+                                <span>Actions: </span>
+                                <Button onClick={handleShow}><IoIosAdd /> <span>Add</span> </Button>
+                                <Button onClick={handleDeleteCategoryShow}><IoIosTrash /> <span>Delete</span></Button>
+                                <Button onClick={handleUpdatedCategoryShow}><IoIosCloudUpload /> <span>Edit</span></Button>
+                            </div>
+                        </div>
+                    </Col>
+                </Row>
+                <Row className="my-3">
+                    <Col md={12}>
+                        <CheckboxTree
+                            nodes={renderCategories(category.categories)}
+                            checked={checked}
+                            expanded={expanded}
+                            onCheck={checked => setChecked(checked)}
+                            onExpand={expanded => setExpanded(expanded)}
+                            icons={{
+                                check: <IoIosCheckbox />,
+                                uncheck: <IoIosCheckboxOutline />,
+                                halfCheck: <IoIosCheckboxOutline />,
+                                expandClose: <IoIosArrowForward />,
+                                expandOpen: <IoIosArrowDown />,
+                            }}
+                        />
+                    </Col>
+                </Row>
             </Container>
 
             <CustomModal

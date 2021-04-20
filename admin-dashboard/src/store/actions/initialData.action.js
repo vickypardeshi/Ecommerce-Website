@@ -7,44 +7,72 @@ import {
 
 export const getInitialData = () => {
     return async dispatch => {
-        
-        dispatch({
-            type: categoryConstants.GET_ALL_CATEGORIES_REQUEST,
-        });
-        dispatch({
-            type: productConstants.GET_ALL_PRODUCTS_REQUEST,
-        });
-        dispatch({
-            type: orderConstants.GET_CUSTOMER_ORDER_REQUEST,
-        });
-
-        const res = await axios.post('/initialData');
-        if(res.status === 200){
-            const { categories, products, orders} = res.data;
+        try{
             dispatch({
-                type: categoryConstants.GET_ALL_CATEGORIES_SUCCESS,
-                payload: { categories}
+                type: categoryConstants.GET_ALL_CATEGORIES_REQUEST,
             });
             dispatch({
-                type: productConstants.GET_ALL_PRODUCTS_SUCCESS,
-                payload: { products }
+                type: productConstants.GET_ALL_PRODUCTS_REQUEST,
             });
             dispatch({
-                type: orderConstants.GET_CUSTOMER_ORDER_SUCCESS,
-                payload: { orders }
+                type: orderConstants.GET_CUSTOMER_ORDER_REQUEST,
             });
+            const res = await axios.post('/initialData');
+            if(res.status === 200){
+                const { categories, products, orders} = res.data;
+                dispatch({
+                    type: categoryConstants.GET_ALL_CATEGORIES_SUCCESS,
+                    payload: { categories}
+                });
+                dispatch({
+                    type: productConstants.GET_ALL_PRODUCTS_SUCCESS,
+                    payload: { products }
+                });
+                dispatch({
+                    type: orderConstants.GET_CUSTOMER_ORDER_SUCCESS,
+                    payload: { orders }
+                });
+            }
+            else{
+                dispatch({
+                    type: categoryConstants.GET_ALL_CATEGORIES_FAILURE,
+                    payload: {
+                        error: res.data.error
+                    }
+                });
+                dispatch({
+                    type: productConstants.GET_ALL_PRODUCTS_FAILURE,
+                    payload: {
+                        error: res.data.error
+                    }
+                });
+                dispatch({
+                    type: orderConstants.GET_CUSTOMER_ORDER_FAILURE,
+                    payload: {
+                        error: res.data.error
+                    }
+                });
+            }
         }
-        else{
+        catch(error){
             dispatch({
                 type: categoryConstants.GET_ALL_CATEGORIES_FAILURE,
+                payload: {
+                    error
+                }
             });
             dispatch({
                 type: productConstants.GET_ALL_PRODUCTS_FAILURE,
+                payload: {
+                    error
+                }
             });
             dispatch({
                 type: orderConstants.GET_CUSTOMER_ORDER_FAILURE,
+                payload: {
+                    error
+                }
             });
         }
-        console.log(res);
     }
 }

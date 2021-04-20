@@ -3,7 +3,6 @@ import {
   Route, Switch,
 } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import './App.css';
 import Home from './views/Home';
 import Signin from './views/Signin';
 import Signup from './views/Signup';
@@ -15,6 +14,7 @@ import Products from './views/Products';
 import Orders from './views/Orders';
 import Category from './views/Category';
 import Page from './views/Page';
+import './App.css';
 
 
 function App() {

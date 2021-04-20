@@ -2,7 +2,7 @@ import { orderConstants } from "../actions/constants"
 
 const initState = {
     loading: false,
-    error: false,
+    error: null,
     orders: [],
 }
 
@@ -26,11 +26,11 @@ export default (state = initState, action) => {
             state = {
                 ...state,
                 loading: false,
-                error: true,
+                error: action.payload.error,
             }
             break;
         default:
             return state;
     }
     return state;
-}
+};

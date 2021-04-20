@@ -20,7 +20,6 @@ export const getCustomerOrders = () => {
                 });
             }
         } catch (error) {
-            console.log(error);
             dispatch({
                 type: orderConstants.GET_CUSTOMER_ORDER_FAILURE,
                 payload: { error },
@@ -46,7 +45,6 @@ export const updateOrder = (payload) => {
                 });
             }
         } catch (error) {
-            console.log(error);
             dispatch({
                 type: orderConstants.UPDATE_CUSTOMER_ORDER_FAILURE,
                 payload: { error },

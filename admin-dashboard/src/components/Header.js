@@ -1,12 +1,11 @@
 import React from 'react';
-import { Navbar, Nav, Container } from 'react-bootstrap';
+import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, Link } from 'react-router-dom';
 import { signout } from '../store/actions/action';
 import '../styles/header.css';
 
 const Header = (props) => {
-
     const auth = useSelector(state => state.auth);
     const dispatch = useDispatch();
 
@@ -18,9 +17,11 @@ const Header = (props) => {
         return (
             <Nav>
                 <li className="nav-item">
-                    <span className="nav-link" onClick={logout}>
-                        Signout
-                    </span>
+                    <Button 
+                        onClick={logout}
+                    >
+                        Logout
+                    </Button>
                 </li>
             </Nav>
         );
@@ -43,17 +44,26 @@ const Header = (props) => {
             </Nav>
         );
     }
+
     return (
-        <Navbar collapseOnSelect fixed="top" expand="lg" bg="dark" variant="dark" className="custom-navbar">
+        <Navbar
+            collapseOnSelect
+            fixed="top"
+            expand="lg"
+            bg="dark"
+            variant="dark"
+            className="custom-navbar"
+        >
             <Container fluid>
                 <Link to="/" className="navbar-brand">Admin Dashboard</Link>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="mr-auto">
                     </Nav>
-                    {auth.authenticate ? 
-                        renderLoggedInLinks() 
-                        : renderNonLoggedInLinks()
+                    {
+                        auth.authenticate
+                            ? renderLoggedInLinks()
+                            : renderNonLoggedInLinks()
                     }
                 </Navbar.Collapse>
             </Container>

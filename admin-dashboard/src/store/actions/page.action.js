@@ -3,7 +3,6 @@ import { pageConstants } from "./constants"
 
 export const createPage = (form) => {
     return async dispatch => {
-
         dispatch({
             type: pageConstants.CREATE_PAGE_REQUEST
         });
@@ -27,7 +26,12 @@ export const createPage = (form) => {
             }
         }
         catch(error){
-            console.log(error);
+            dispatch({
+                type: pageConstants.CREATE_PAGE_FAILURE,
+                payload: {
+                    error
+                }
+            });
         }
     }
-}
+};

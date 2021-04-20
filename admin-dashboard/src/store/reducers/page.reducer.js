@@ -3,7 +3,7 @@ import { pageConstants } from "../actions/constants"
 const initState = {
     loading: false,
     error: null,
-    page: {}
+    page: [],
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -19,18 +19,18 @@ export default (state = initState, action) => {
             state = {
                 ...state,
                 loading: false,
-                //page: action.payload.page,
+                page: action.payload.page
             }
             break;
         case pageConstants.CREATE_PAGE_FAILURE:
             state = {
                 ...state,
                 loading: false,
-                error: action.payload.error
+                error: action.payload.error,
             }
             break;
         default:
             return state;
     }
     return state;
-}
+};

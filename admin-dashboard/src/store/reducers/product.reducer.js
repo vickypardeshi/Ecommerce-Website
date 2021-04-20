@@ -3,8 +3,9 @@ import { productConstants } from "../actions/constants";
 const initState = {
     products: [],
     loading: false,
-    error: '',
+    error: null,
 }
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default (state = initState, action) => {
     switch (action.type) {
@@ -25,26 +26,22 @@ export default (state = initState, action) => {
             state = {
                 ...state,
                 loading: false,
+                error: action.payload.error,
             }
             break;
-        case productConstants.ADD_NEW_PRODUCT_REQUEST:
+        case productConstants.ADD_PRODUCT_REQUEST:
             state = {
                 ...state,
                 loading: true,
             }
             break;
-        case productConstants.ADD_NEW_PRODUCT_SUCCESS:
-            const product = action.payload.products;
-            const updatedProducts = state.products.push({
-                ...product
-            });
-            console.log(updatedProducts);
+        case productConstants.ADD_PRODUCT_SUCCESS:
             state = {
                 ...state,
                 loading: false,
             }
             break;
-        case productConstants.ADD_NEW_PRODUCT_FAILURE:
+        case productConstants.ADD_PRODUCT_FAILURE:
             state = {
                 ...state,
                 loading: false,
@@ -55,4 +52,4 @@ export default (state = initState, action) => {
             return state;
     }
     return state;
-}
+};

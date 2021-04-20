@@ -3,12 +3,11 @@ import { categoryConstants } from "../actions/constants";
 const initState = {
     categories: [],
     loading: false,
-    error: null
+    error: null,
 };
 
 const buildNewCategories = (parentId, categories, newCategory) => {
     let myCategories = [];
-
     if (parentId === undefined) {
         return [
             ...categories,
@@ -22,7 +21,6 @@ const buildNewCategories = (parentId, categories, newCategory) => {
             }
         ];
     }
-
     for (let category of categories) {
         if (category._id === parentId) {
             const createNewCategory = {
@@ -48,9 +46,7 @@ const buildNewCategories = (parentId, categories, newCategory) => {
                     : [],
             });
         }
-
     }
-
     return myCategories;
 }
 
@@ -74,6 +70,7 @@ export default (state = initState, action) => {
             state = {
                 ...state,
                 loading: false,
+                error: action.payload.error
             }
             break;
         case categoryConstants.ADD_NEW_CATEGORY_REQUEST:
@@ -85,7 +82,6 @@ export default (state = initState, action) => {
         case categoryConstants.ADD_NEW_CATEGORY_SUCCESS:
             const category = action.payload.category;
             const updatedCategories = buildNewCategories(category.parentId, state.categories, category);
-
             state = {
                 ...state,
                 loading: false,
@@ -96,6 +92,7 @@ export default (state = initState, action) => {
             state = {
                 ...initState,
                 loading: false,
+                error: action.payload.error
             }
             break;
         case categoryConstants.UPDATE_CATEGORIES_REQUEST:
@@ -140,4 +137,4 @@ export default (state = initState, action) => {
             return state;
     }
     return state;
-}
+};

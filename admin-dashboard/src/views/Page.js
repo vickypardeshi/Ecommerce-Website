@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Button, Col, Container, Row, Spinner } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import createCategoryList from '../components/common/CreateCategoryList';
 import CustomModal from '../components/common/CustomModal';
+import ErrorHandler from '../components/common/ErrorHandler';
 import FormInput from '../components/common/FormInput';
 import Layout from '../components/Layout';
-import { createPage } from '../store/actions/action';
+import { createPage, getInitialData } from '../store/actions/action';
 
 const Page = () => {
 
@@ -20,17 +21,13 @@ const Page = () => {
 
     const category = useSelector(state => state.category);
     const page = useSelector(state => state.page);
+    const { loading, error } = page;
 
     const dispatch = useDispatch();
 
     useEffect(() => {
         setCategories(createCategoryList(category.categories));
     }, [category]);
-
-    useEffect(() =>{
-        console.log(page);
-
-    }, [page]);
 
     const onCategoryChange = (e) => {
         const category = categories.find(
@@ -56,19 +53,24 @@ const Page = () => {
     }
 
     const handleSubmit = () => {
+        if (title === "") {
+            //alert('Title is required');
+            setShowCreatePage(false);
+            return;
+        }
         const form = new FormData();
         form.append('title', title);
         form.append('description', desc);
         form.append('category', categoryId);
         form.append('type', type);
-        
+
         banners.forEach((banner, index) => {
             form.append('banners', banner);
         });
         products.forEach((product, index) => {
             form.append('products', product);
         });
-        
+
         dispatch(createPage(form));
 
         setTitle('');
@@ -91,12 +93,16 @@ const Page = () => {
         setProducts([...products, e.target.files[0]]);
     }
 
+    const retryLogic = () => {
+        dispatch(getInitialData());
+    }
+
     const createPageBody = (
         <>
             <Container>
                 <Row>
                     <Col>
-                        <FormInput 
+                        <FormInput
                             inputType="select"
                             placeholder={'Select Category'}
                             value={categoryId}
@@ -165,9 +171,45 @@ const Page = () => {
         </>
     );
 
+    if (loading) {
+        return (
+            <Layout sidebar>
+                <Container>
+                    <Row>
+                        <Col
+                            className="text-center py-3"
+                        >
+                            <Spinner
+                                variant="primary"
+                                animation="border"
+                            />
+                        </Col>
+                    </Row>
+                </Container>
+            </Layout>
+
+        );
+    }
+
+    if (error) {
+        return (
+            <Layout sidebar>
+                <ErrorHandler
+                    retryLogic={retryLogic}
+                //errorMessage={error.message}
+                />
+            </Layout>
+        );
+    }
+
     return (
         <Layout sidebar>
-            <button onClick={handleShow}>Create Page</button>
+            <Button 
+                onClick={handleShow}
+                className="mx-2 my-2 fs-1"
+            >
+                Create Page
+            </Button>
             <CustomModal
                 title={'Create New Page'}
                 show={showCreatePage}

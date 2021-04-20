@@ -1,7 +1,7 @@
 import React from 'react';
-import Header from './Header';
 import { Col, Container, Row } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
+import Header from './Header';
 import '../styles/layout.css'
 
 const Layout = (props) => {
@@ -9,7 +9,8 @@ const Layout = (props) => {
         <>
             <Header />
             {
-                props.sidebar ?
+                props.sidebar
+                    ?
                     <Container fluid>
                         <Row>
                             <Col md={2} className="sidebar">

@@ -4,13 +4,12 @@ import '../../styles/common/card.css';
 const Card = (props) => {
   return (
     <div className="card" {...props}>
-      {(props.headerLeft || props.headerRight) && (
+      {(props.headerleft || props.headerright) && (
         <div className="cardHeader">
-          {props.headerLeft && <div>{props.headerLeft}</div>}
-          {props.headerRight && props.headerRight}
+          {props.headerleft && <div>{props.headerleft}</div>}
+          {props.headerright && props.headerright}
         </div>
       )}
-
       {props.children}
     </div>
   );

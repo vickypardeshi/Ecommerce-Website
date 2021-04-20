@@ -7,7 +7,7 @@
     height: 5px;
     background: #777;
     position: relative;
-    font-size: 12px;
+    font-size: 14px;
 }
 .orderStatus.active{
     background: #26A541;
@@ -38,10 +38,10 @@
 }
 
 .title{
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
 }
 .value{
-    font-size: 12px;
+    font-size: 14px;
     text-transform: capitalize;
 }
