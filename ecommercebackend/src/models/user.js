@@ -7,14 +7,14 @@ const user = new mongoose.Schema({
         required: true,
         trim: true,
         min: 3,
-        max: 25
+        max: 15
     },
     lastName: {
         type: String,
         required: true,
         trim: true,
         min: 3,
-        max: 25,
+        max: 15,
     },
     userName: {
         type: String,
@@ -48,12 +48,13 @@ const user = new mongoose.Schema({
     },
 }, {timestamps: true});
 
-//add virtual field
+
 // user.virtual('password')
 // .set(function(password) {
 //     this.hashPassword = bcrypt.hashSync(password, 10);
 // });
 
+//add virtual field
 user.virtual('fullName')
 .get(function() {
     return `${this.firstName} ${this.lastName}`;
@@ -68,4 +69,4 @@ user.methods = {
 }
 
 
-module.exports = mongoose.model('User', user); 
+module.exports = mongoose.model('User', user);

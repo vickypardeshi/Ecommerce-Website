@@ -4,7 +4,9 @@ const {
     requireSignin, userMiddleware,
 } = require('../common-middleware/middleware');
 const {
-    getCartItems, addItemToCart, removeCartItems,
+    getCartItems, 
+    addItemToCart, 
+    removeCartItems,
 } = require('../controller/cart');
 
 router.post('/user/cart/addtocart', requireSignin, userMiddleware, addItemToCart);

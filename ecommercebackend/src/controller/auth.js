@@ -14,7 +14,7 @@ exports.signup = (req, res) => {
         .exec(async (error, user) => {
             if (user) {
                 return res.status(400).json({
-                    message: 'User already exist',
+                    error: 'User already registered',
                 });
             }
             const {
@@ -45,7 +45,7 @@ exports.signup = (req, res) => {
                 }
             })
         });
-}
+};
 
 exports.signin = (req, res) => {
     User.findOne({ email: req.body.email })
@@ -70,14 +70,14 @@ exports.signin = (req, res) => {
                 }
                 else {
                     return res.status(400).json({
-                        message: 'Something went wrong',
+                        message: 'Invalid username/password',
                     });
                 }
             }
             else {
                 return res.status(400).json({
-                    message: 'Invalid username/password ',
+                    message: 'Something went wrong',
                 });
             }
         });
-}
+};

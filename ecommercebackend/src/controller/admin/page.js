@@ -28,15 +28,15 @@ exports.createPage = (req, res) => {
             Page.findOneAndUpdate({
                 category: req.body.category
             }, req.body)
-            .exec((error, updatePage) => {
+            .exec((error, updatedPage) => {
                 if(error){
                     return res.status(400).json({
                         error
                     });
                 }
-                if(updatePage){
+                if(updatedPage){
                     return res.status(201).json({
-                        page: updatePage
+                        page: updatedPage
                     });
                 }
             })
@@ -58,7 +58,7 @@ exports.createPage = (req, res) => {
             });
         }
     })
-}
+};
 
 exports.getPage = (req, res) => {
     const { category, type } = req.params;
@@ -77,4 +77,4 @@ exports.getPage = (req, res) => {
             }
         })
     }
-}
+};

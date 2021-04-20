@@ -28,7 +28,7 @@ function getCategoriesList(categories, parentId=null){
 
 exports.initialData = async (req, res) => {
     const categories = await Category.find({}).exec();
-    const products = await Product.find({})
+    const products = await Product.find({ createdBy: req.user._id })
         .select('_id name price quantity slug description productPictures category')
         .populate({
             path: 'category',
@@ -43,4 +43,4 @@ exports.initialData = async (req, res) => {
         products,
         orders,
     });
-}
+};

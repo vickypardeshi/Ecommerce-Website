@@ -32,4 +32,4 @@ exports.isRequestValidated = (req, res, next) => {
         });
     }
     next();
-}
+};

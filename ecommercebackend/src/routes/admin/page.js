@@ -1,4 +1,5 @@
 const express = require('express');
+const router = express.Router();
 const {
     upload, requireSignin, 
     adminMiddleware,
@@ -6,7 +7,6 @@ const {
 const {
     createPage, getPage,
 } = require('../../controller/admin/page');
-const router = express.Router();
 
 router.post('/page/create', requireSignin, adminMiddleware, upload.fields([
     { name: 'banners'},

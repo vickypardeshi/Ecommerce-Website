@@ -20,6 +20,11 @@ const category = new mongoose.Schema({
     parentId: {
         type: String,
     },
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+    },
     
 }, {timestamps: true });
 

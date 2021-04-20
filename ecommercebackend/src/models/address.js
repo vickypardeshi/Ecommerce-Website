@@ -10,9 +10,10 @@ const addressSchema = new mongoose.Schema({
     max: 50,
   },
   mobileNumber: {
-    type: String,
+    type: Number,
     required: true,
-    trim: true,
+    min: 10,
+    max: 10,
   },
   pinCode: {
     type: String,
@@ -49,7 +50,9 @@ const addressSchema = new mongoose.Schema({
     max: 100,
   },
   alternatePhone: {
-    type: String,
+    type: Number,
+    min: 10,
+    max: 10,
   },
   addressType: {
     type: String,

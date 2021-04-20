@@ -28,10 +28,10 @@ function getCategoriesList(categories, parentId=null){
 }
 
 exports.addCategory = (req, res) => {
-
     const categoryObj = {
         name: req.body.name,
-        slug: `${slugify(req.body.name)}-${shortid.generate()}`,  
+        slug: `${slugify(req.body.name)}-${shortid.generate()}`,
+        createdBy: req.user._id, 
     }
 
     if(req.file){
@@ -56,7 +56,7 @@ exports.addCategory = (req, res) => {
             });
         }
     });
-}
+};
 
 exports.getCategories = (req, res) => {
     Category.find({})
@@ -72,11 +72,10 @@ exports.getCategories = (req, res) => {
                 categoryList,
             })
         }
-    })
-}
+    });
+};
 
 exports.updateCategories = async (req, res) => {
-
     const { _id, name, parentId, type } = req.body;
     const updateCategories = [];
     if(name instanceof Array){
@@ -109,7 +108,7 @@ exports.updateCategories = async (req, res) => {
         return res.status(200).json({updateCategory});
     }
     
-}
+};
 
 exports.deleteCategories = async (req, res) => {
     const { ids } = req.body.payload;
@@ -123,7 +122,7 @@ exports.deleteCategories = async (req, res) => {
 
     if(deletedCategories.length === ids.length){
         res.status(201).json({
-            message: 'Categories Deleted'
+            message: 'Categories removed'
         });
     }
     else{
@@ -131,4 +130,4 @@ exports.deleteCategories = async (req, res) => {
             message: 'Something went wrong'
         });
     }
-}
+};

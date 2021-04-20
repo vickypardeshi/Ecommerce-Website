@@ -10,7 +10,7 @@ exports.signup = (req, res) => {
     .exec(async (error, user) => {
         if(user) {
             return res.status(400).json({
-                message: 'Admin already exist',
+                message: 'Admin already registered',
             });
         }
 
@@ -72,13 +72,13 @@ exports.signin = (req, res) => {
             }
             else{
                 return res.status(400).json({
-                    message: 'Something went wrong',
+                    message: 'Invalid Username / Password',
                 });
             }
         }
         else{
             return res.status(400).json({
-                message: 'Invalid username/password ', 
+                message: 'Something went wrong', 
             });
         }
     });

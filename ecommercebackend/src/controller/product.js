@@ -130,6 +130,6 @@ exports.getProducts = async (req, res) => {
         .select("_id name price quantity slug description productPictures category")
         .populate({ path: "category", select: "_id name" })
         .exec();
-
+    
     res.status(200).json({ products });
 };
