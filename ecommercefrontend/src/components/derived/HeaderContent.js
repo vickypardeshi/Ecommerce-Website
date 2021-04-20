@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import '../../styles/derived/headerContent.css';
 
 const Modal = (props) => {
@@ -24,7 +25,6 @@ const Modal = (props) => {
 const MaterialInput = (props) => {
     const [focus, setFocus] = useState(props.value === "" ? false : true);
     const [touch, setTouch] = useState(false);
-
     return (
         <div className="materialInput">
             <label
@@ -61,7 +61,7 @@ const MaterialInput = (props) => {
                         }
                     }}
                 />
-                {props.rightElement ? props.rightElement : null}
+                {props.rightelement ? props.rightelement : null}
             </div>
             {touch && (
                 <div
@@ -79,11 +79,9 @@ const MaterialInput = (props) => {
 };
 
 const MaterialButton = (props) => {
-
     const onClick = () => {
         props.onClick && props.onClick();
     }
-
     return (
         <div
             style={{
@@ -96,6 +94,7 @@ const MaterialButton = (props) => {
                 style={{
                     backgroundColor: props.bgColor,
                     color: props.textColor,
+                    fontSize: props.fontSize,
                 }}
                 onClick={onClick}
             >
@@ -117,16 +116,17 @@ const DropdownMenu = (props) => {
                     {props.menus &&
                         props.menus.map((item, index) => (
                             <li key={index}>
-                                <a onClick={(e) => {
-                                    if (item.onClick) {
-                                        e.preventDefault();
-                                        item.onClick && item.onClick();
-                                    }
-                                }}
-                                    href={`${item.href}`}
+                                <Link 
+                                    onClick={(e) => {
+                                        if (item.onClick) {
+                                            e.preventDefault();
+                                            item.onClick && item.onClick();
+                                        }
+                                    }}
+                                    to={`${item.href}`}
                                 >
                                     {item.label}
-                                </a>
+                                </Link>
                             </li>
                         ))}
                 </ul>
@@ -150,7 +150,7 @@ const Breed = (props) => {
                 {props.breed &&
                     props.breed.map((item, index) => (
                         <li key={index}>
-                            <a href={item.href}>{item.name}</a>
+                            <Link to={item.href}>{item.name}</Link>
                             {props.breedIcon}
                         </li>
                     ))}

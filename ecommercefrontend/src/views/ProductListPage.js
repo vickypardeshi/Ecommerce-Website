@@ -6,7 +6,6 @@ import ProductPage from './Products/ProductPage';
 import ProductStore from './Products/ProductStore';
 
 const ProductListPage = (props) => {
-
     const renderProduct = () => {
         const params = getParams(props.location.search);
         let content = null;
@@ -26,7 +25,6 @@ const ProductListPage = (props) => {
 
     return (
         <Layout>
-            
             {renderProduct()}
         </Layout>
     );

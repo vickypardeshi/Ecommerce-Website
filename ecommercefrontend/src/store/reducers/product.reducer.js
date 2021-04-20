@@ -2,7 +2,7 @@ import { productConstants } from "../actions/constants"
 
 const initState = {
     loading: false,
-    error: '',
+    error: null,
     products: [],
     priceRange: {},
     productsByPrice: {},
@@ -60,4 +60,4 @@ export default (state = initState, action) => {
             return state;
     }
     return state;
-}
+};

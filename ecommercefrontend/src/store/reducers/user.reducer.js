@@ -3,6 +3,8 @@ import { userConstants } from '../actions/constants';
 const initState = {
     loading: false,
     error: null,
+    orderFetching: false,
+    placeOrder: false,
     address: [],
     orders: [],
     orderDetails: [],
@@ -55,20 +57,20 @@ export default (state = initState, action) => {
         case userConstants.GET_USER_ORDER_REQUEST:
             state = {
                 ...state,
-                loading: true,
+                orderFetching: true,
             }
             break;
         case userConstants.GET_USER_ORDER_SUCCESS:
             state = {
                 ...state,
-                loading: false,
+                orderFetching: false,
                 orders: action.payload.orders,
             }
             break;
         case userConstants.GET_USER_ORDER_FAILURE:
             state = {
                 ...state,
-                loading: false,
+                orderFetching: false,
                 error: action.payload.error,
             }
             break;
@@ -92,14 +94,28 @@ export default (state = initState, action) => {
                 error: action.payload.error,
             }
             break;
+        case userConstants.ADD_USER_ORDER_REQUEST:
+            state = {
+                ...state,
+                placeOrder: true,
+            };
+            break;
         case userConstants.ADD_USER_ORDER_SUCCESS:
             state = {
                 ...state,
+                placeOrder: false,
                 placedOrderId: action.payload.order._id,
+            };
+            break;
+        case userConstants.ADD_USER_ORDER_FAILURE:
+            state = {
+                ...state,
+                placeOrder: false,
+                error: action.payload.error
             };
             break;
         default:
             return state;
     }
     return state;
-}
+};

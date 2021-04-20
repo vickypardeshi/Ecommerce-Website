@@ -8,7 +8,6 @@ export const getAddress = () => {
             dispatch({
                 type: userConstants.GET_USER_ADDRESS_REQUEST,
             });
-
             if (res.status === 200) {
                 const {
                     userAddress: {
@@ -31,10 +30,8 @@ export const getAddress = () => {
                     }
                 });
             }
-
         }
         catch (error) {
-            console.log(error);
             dispatch({
                 type: userConstants.GET_USER_ADDRESS_FAILURE,
                 payload: {
@@ -43,7 +40,7 @@ export const getAddress = () => {
             });
         }
     }
-}
+};
 
 export const addAddress = (payload) => {
     return async dispatch => {
@@ -53,7 +50,6 @@ export const addAddress = (payload) => {
                 type: userConstants.ADD_USER_ADDRESS_REQUEST,
             });
             if (res.status === 201) {
-                console.log(res);
                 const {
                     address: {
                         address
@@ -77,7 +73,6 @@ export const addAddress = (payload) => {
             }
         }
         catch (error) {
-            console.log(error);
             dispatch({
                 type: userConstants.ADD_USER_ADDRESS_FAILURE,
                 payload: {
@@ -86,7 +81,7 @@ export const addAddress = (payload) => {
             });
         }
     }
-}
+};
 
 export const addOrder = (payload) => {
     return async dispatch => {
@@ -96,7 +91,6 @@ export const addOrder = (payload) => {
                 type: userConstants.ADD_USER_ORDER_REQUEST,
             });
             if (res.status === 201) {
-                console.log(res);
                 const { order } = res.data;
                 dispatch({
                     type: cartConstants.RESET_CART_SUCCESS,
@@ -105,17 +99,6 @@ export const addOrder = (payload) => {
                     type: userConstants.ADD_USER_ORDER_SUCCESS,
                     payload: { order },
                 });
-                // const {
-                //     address: {
-                //         address
-                //     }
-                // } = res.data;
-                // dispatch({
-                //     type: userConstants.ADD_USER_ORDER_SUCCESS,
-                //     payload: {
-                //         address
-                //     }
-                // });
             }
             else {
                 const { error } = res.data;
@@ -137,7 +120,7 @@ export const addOrder = (payload) => {
             });
         }
     }
-}
+};
 
 export const getOrders = () => {
     return async dispatch => {
@@ -176,7 +159,7 @@ export const getOrders = () => {
             });
         }
     }
-}
+};
 // single order with complete info and delivery location
 export const getOrder = (payload) => {
     return async (dispatch) => {
@@ -184,7 +167,6 @@ export const getOrder = (payload) => {
             const res = await axios.post(`/getorder`, payload);
             dispatch({ type: userConstants.GET_USER_ORDER_DETAILS_REQUEST });
             if (res.status === 200) {
-                console.log(res);
                 const { order } = res.data;
                 dispatch({
                     type: userConstants.GET_USER_ORDER_DETAILS_SUCCESS,
@@ -198,7 +180,6 @@ export const getOrder = (payload) => {
                 });
             }
         } catch (error) {
-            console.log(error);
             dispatch({
                 type: userConstants.GET_USER_ORDER_DETAILS_FAILURE,
                 payload: { error },

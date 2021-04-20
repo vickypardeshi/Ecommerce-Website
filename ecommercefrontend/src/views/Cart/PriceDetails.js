@@ -3,7 +3,7 @@ import Card from '../../components/common/Card';
 
 const PriceDetails = (props) => {
   return (
-    <Card headerLeft={"Price Details"} style={{ maxWidth: "380px" }}>
+    <Card headerleft={"Price Details"} style={{ maxWidth: "380px" }}>
       <div
         style={{
           padding: "20px",

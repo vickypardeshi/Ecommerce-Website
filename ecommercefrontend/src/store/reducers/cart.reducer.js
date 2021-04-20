@@ -11,7 +11,7 @@ const initState = {
         // }
     },
     loading: false,
-    error: false,
+    error: null,
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -34,7 +34,7 @@ export default (state = initState, action) => {
             state = {
                 ...state,
                 loading: false,
-                error: true,
+                error: action.payload.error,
             }
             break;
         case cartConstants.RESET_CART_SUCCESS:
@@ -46,4 +46,4 @@ export default (state = initState, action) => {
             return state;
     }
     return state;
-}
+};

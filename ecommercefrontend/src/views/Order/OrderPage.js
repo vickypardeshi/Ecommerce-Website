@@ -7,14 +7,8 @@ import { getOrders } from '../../store/actions/action';
 import Layout from '../../components/Layout';
 import Card from '../../components/common/Card';
 import { Breed } from '../../components/derived/HeaderContent';
-
-import '../../styles/order/orderpage.css';
 import { generatePublicUrl } from '../../api/url';
-
-/**
- * @author
- * @function OrderPage
- **/
+import '../../styles/order/orderpage.css';
 
 const OrderPage = (props) => {
   const dispatch = useDispatch();
@@ -23,8 +17,6 @@ const OrderPage = (props) => {
   useEffect(() => {
     dispatch(getOrders());
   }, [dispatch]);
-
-  console.log(user);
 
   return (
     <Layout>

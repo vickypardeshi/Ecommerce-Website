@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import flipkartLogo from '../images/logo/flipkart.png';
 import goldenStar from '../images/logo/golden-star.png';
 import {
@@ -14,7 +15,7 @@ import {
     DropdownMenu,
 } from '../components/derived/HeaderContent';
 import {
-    getCartItems,
+    //getCartItems,
     login, signout,
     signup as usersignup
 } from '../store/actions/action';
@@ -32,6 +33,7 @@ const Header = (props) => {
 
     const auth = useSelector(state => state.auth);
     const cart = useSelector((state) => state.cart);
+    console.log({auth});
     const dispatch = useDispatch();
 
     const handleLoginModalClose = () => {
@@ -52,7 +54,7 @@ const Header = (props) => {
             firstName === ""
             || lastName === ""
             || email === ""
-            || password === "" 
+            || password === ""
         ) {
             return;
         }
@@ -75,20 +77,17 @@ const Header = (props) => {
         setLastName('');
         setEmail('');
         setPassword('');
-        console.log(props.history);
     }
 
     useEffect(() => {
-
         if (auth.authenticate) {
             handleLoginModalClose();
         }
-
     }, [auth.authenticate]);
 
-    useEffect(() => {
-        dispatch(getCartItems());
-    }, [dispatch]);
+    // useEffect(() => {
+    //     dispatch(getCartItems());
+    // }, [dispatch]);
 
     const renderLoggedInMenu = () => {
         return (
@@ -113,7 +112,7 @@ const Header = (props) => {
                     { label: "Rewards", href: "", icon: null },
                     { label: "Notifications", href: "", icon: null },
                     { label: "Gift Cards", href: "", icon: null },
-                    { label: "Logout", href: "", icon: null, onClick:  logout },
+                    { label: "Logout", href: "", icon: null, onClick: logout },
                 ]}
             />
         );
@@ -131,7 +130,7 @@ const Header = (props) => {
                         }}
                     >
                         Login
-              </a>
+                    </a>
                 }
                 menus={[
                     { label: "My Profile", href: "", icon: null },
@@ -151,15 +150,18 @@ const Header = (props) => {
                 firstMenu={
                     <div className="firstmenu">
                         <span>New Customer?</span>
-                        <a
+                        <Link
                             onClick={() => {
                                 handleLoginModalShow();
                                 setSignup(true);
                             }}
-                            style={{ color: "#2874f0" }}
+                            style={{
+                                color: "#2874f0",
+                                textDecoration: 'none'
+                            }}
                         >
                             Sign Up
-                </a>
+                        </Link>
                     </div>
                 }
             />
@@ -180,9 +182,11 @@ const Header = (props) => {
                         </div>
                         <div className="rightspace">
                             <div className="loginInputContainer">
-                                {/* {auth.error && (
-                                    <div style={{ color: "red", fontSize: 12 }}>{auth.error}</div>
-                                )} */}
+                                {auth.error && (
+                                    <div style={{ color: "red", fontSize: 12 }}>
+                                        {auth.error}
+                                    </div>
+                                )}
                                 {signup && (
                                     <MaterialInput
                                         type="text"
@@ -211,7 +215,7 @@ const Header = (props) => {
                                     label="Password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                // rightElement={<a href="#">Forgot?</a>}
+                                // rightelement={<Link to={"#"}>Forgot?</Link>}
                                 />
                                 <MaterialButton
                                     title={signup ? "Register" : "Login"}
@@ -228,7 +232,7 @@ const Header = (props) => {
                                     bgColor="#ffffff"
                                     textColor="#2874f0"
                                     style={{
-                                        margin: "20px 0",
+                                        margin: "20px 0 15 0",
                                     }}
                                 />
                             </div>
@@ -239,14 +243,14 @@ const Header = (props) => {
             <div className="subHeader">
                 {/* Logo  */}
                 <div className="logo">
-                    <a href="/">
+                    <Link to={"/"}>
                         <img src={flipkartLogo} className="logoimage" alt="" />
-                    </a>
-                    <a href="/" style={{ marginTop: "-10px" }}>
+                    </Link>
+                    <Link to={"/"} style={{ marginTop: "-10px" }}>
                         <span className="exploreText">Explore</span>
                         <span className="plusText">Plus</span>
                         <img src={goldenStar} className="goldenStar" alt="" />
-                    </a>
+                    </Link>
                 </div>
                 {/* logo ends here */}
 
@@ -297,7 +301,7 @@ const Header = (props) => {
                         ]}
                     />
                     <div>
-                        <a href={`/cart`} className="cart">
+                        <Link to={`/cart`} className="cart">
                             {
                                 Object.keys(cart.cartItems).length > 0
                                     ?
@@ -306,7 +310,7 @@ const Header = (props) => {
                                     <IoIosCart />
                             }
                             <span style={{ margin: "0 10px" }}>Cart</span>
-                        </a>
+                        </Link>
                     </div>
                 </div>
                 {/* right side menu ends here */}

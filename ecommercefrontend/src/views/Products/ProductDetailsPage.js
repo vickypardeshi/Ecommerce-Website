@@ -9,15 +9,16 @@ import { AiFillThunderbolt } from "react-icons/ai";
 import {
     MaterialButton
 } from '../../components/derived/HeaderContent';
-import '../../styles/products/productDetails.css'
 import { generatePublicUrl } from '../../api/url';
 import { addToCart } from '../../store/actions/action';
+import '../../styles/products/productDetails.css'
+
 
 const ProductDetailsPage = (props) => {
-
     const dispatch = useDispatch();
     const product = useSelector(state => state.product);
-    console.log(product.productDetails);
+    console.log(product);
+
     useEffect(() => {
         const { productId } = props.match.params;
         const payload = {
@@ -34,14 +35,13 @@ const ProductDetailsPage = (props) => {
 
     return (
         <Layout>
-            {/* <div>{product.productDetails.name}</div> */}
             <div className="productDescriptionContainer">
                 <div className="flexRow">
                     <div className="verticalImageStack">
                         {
                             product.productDetails.productPictures.map((thumb, index) => (
                                 <div className="thumbnail">
-                                    <img src={generatePublicUrl(thumb.img)} alt={"NOT"} />
+                                    <img src={generatePublicUrl(thumb.img)} alt={thumb.img} />
                                 </div>
                             ))
                         }
@@ -79,6 +79,12 @@ const ProductDetailsPage = (props) => {
                                     marginLeft: "5px",
                                 }}
                                 icon={<AiFillThunderbolt />}
+                                onClick={() => {
+                                    const { _id, name, price } = product.productDetails;
+                                    const img = product.productDetails.productPictures[0].img;
+                                    dispatch(addToCart({ _id, name, price, img }));
+                                    props.history.push(`/checkout`);
+                                }}
                             />
                         </div>
                     </div>

@@ -60,7 +60,6 @@ const AddressForm = (props) => {
         addressType,
       },
     };
-    console.log(payload);
     if (id) {     //update addr check id 
       payload.address._id = id;
     }
@@ -69,9 +68,7 @@ const AddressForm = (props) => {
   };
 
   useEffect(() => {
-    console.log("addressCount", user.address);
     if (submitFlag) {
-      console.log("where are we", user);
       let _address = {};
       if (id) {
         _address = {
@@ -88,10 +85,9 @@ const AddressForm = (props) => {
           addressType,
         };
       } else {
-        //new address ficked & add into redux state
+        //new address picked & add into redux state
         _address = user.address.slice(user.address.length - 1)[0];
       }
-
       props.onSubmitForm(_address);
     }
   }, [address, addressType, alternatePhone, cityDistrictTown, id, landmark, locality, mobileNumber, name, pinCode, props, state, submitFlag, user, user.address]);
@@ -173,9 +169,14 @@ const AddressForm = (props) => {
             />
           </div>
         </div>
-        <div>
-          <label>Address Type</label>
-          <div className="flexRow">
+        <div style={{paddingTop: '20px'}}>
+          <label>
+            Address Type
+          </label>
+          <div 
+            className="flexRow" 
+            style={{paddingTop: '20px'}}
+          >
             <div>
               <input
                 type="radio"
@@ -185,6 +186,7 @@ const AddressForm = (props) => {
               />
               <span>Home</span>
             </div>
+            &nbsp;&nbsp;
             <div>
               <input
                 type="radio"
@@ -196,10 +198,22 @@ const AddressForm = (props) => {
             </div>
           </div>
         </div>
-        <div className="flexRow">
+        <div className="flexRow"
+          style={{justifyContent: 'space-between'}}
+        >
           <MaterialButton
             title="SAVE AND DELIVER HERE"
             onClick={onAddressSubmit}
+            style={{
+              width: "250px",
+              margin: "20px 0",
+            }}
+          />
+          <MaterialButton
+            title="CANCEL"
+            onClick={props.onCancel}
+            bgColor="#ff9f00"
+            textColor="#ffffff"
             style={{
               width: "250px",
               margin: "20px 0",

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Button } from 'react-bootstrap';
 import {
-  addOrder, 
+  addOrder,
   getAddress,
   getCartItems,
+  login,
 } from '../../store/actions/action';
 import Layout from '../../components/Layout';
 import {
@@ -15,7 +17,6 @@ import PriceDetails from './PriceDetails';
 import Card from '../../components/common/Card';
 import CartPage from './CartPage';
 import AddressForm from './AddressForm';
-
 import '../../styles/cart/checkoutpage.css'
 
 
@@ -106,8 +107,21 @@ const CheckoutPage = (props) => {
   const [orderConfirmation, setOrderConfirmation] = useState(false);
   const [paymentOption, setPaymentOption] = useState(false);
   const [confirmOrder, setConfirmOrder] = useState(false);
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
+
+  const userLogin = () => {
+    dispatch(login({ email, password }));
+    // if (signup) {
+    //   userSignup();
+    // } else {
+    //   dispatch(login({ email, password }));
+    // }
+  }
 
   const onAddressSubmit = (addr) => {
     setSelectedAddress(addr);
@@ -116,7 +130,6 @@ const CheckoutPage = (props) => {
   };
 
   const selectAddress = (addr) => {
-    //console.log(addr);
     const updatedAddress = address.map((adr) =>
       adr._id === addr._id
         ? { ...adr, selected: true }
@@ -165,7 +178,6 @@ const CheckoutPage = (props) => {
       paymentType: "cod",
     };
 
-    console.log(payload);
     dispatch(addOrder(payload));
     setConfirmOrder(true);
   };
@@ -182,11 +194,9 @@ const CheckoutPage = (props) => {
       edit: false,
     }));
     setAddress(address);
-    //user.address.length === 0 && setNewAddress(true);
   }, [user.address]);
 
   useEffect(() => {
-    console.log(confirmOrder, user.placedOrderId, );
     if (confirmOrder && user.placedOrderId) {
       props.history.push(`/order_details/${user.placedOrderId}`);
     }
@@ -206,10 +216,42 @@ const CheckoutPage = (props) => {
                 <div className="loggedInId">
                   <span style={{ fontWeight: 500 }}>{auth.user.fullName}</span>
                   <span style={{ margin: "0 5px" }}>{auth.user.email}</span>
+                  <Button
+                    style={{
+                      margin: "0 10px 0 350px", 
+                      padding: '5px'
+                    }}
+                    onClick={() =>{alert('logout')}}
+                  >
+                    Change
+                  </Button>
                 </div>
               ) : (
                   <div>
-                    <MaterialInput label="Email" />
+                    <MaterialInput
+                      type="text"
+                      label="Email/Mobile Number"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <MaterialInput
+                      type="password"
+                      label="Password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    // rightelement={<Link to={"#"}>Forgot?</Link>}
+                    />
+                    <div style={{ display: 'flex' }}>
+                      <MaterialButton
+                        title={"Login"}
+                        bgColor="#fb641b"
+                        textColor="#ffffff"
+                        style={{
+                          margin: "10px 250px",
+                        }}
+                        onClick={userLogin}
+                      />
+                    </div>
                   </div>
                 )
             }
@@ -241,7 +283,7 @@ const CheckoutPage = (props) => {
 
           {/* AddressForm */}
           {confirmAddress ? null : newAddress ? (
-            <AddressForm onSubmitForm={onAddressSubmit} onCancel={() => { }} />
+            <AddressForm onSubmitForm={onAddressSubmit} onCancel={() => { setNewAddress(false) }}  />
           ) : auth.authenticate ? (
             <CheckoutStep
               stepNumber={"+"}
@@ -279,7 +321,7 @@ const CheckoutPage = (props) => {
                   alignItems: "center",
                 }}
               >
-                <p style={{ fontSize: "12px" }}>
+                <p style={{ fontSize: "16px" }}>
                   Order confirmation email will be sent to{" "}
                   <strong>{auth.user.email}</strong>
                 </p>

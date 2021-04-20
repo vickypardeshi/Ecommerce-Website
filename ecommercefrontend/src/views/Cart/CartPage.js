@@ -19,12 +19,10 @@ if logged in then add products to users cart database from localStorage
 */
 
 const CartPage = (props) => {
-
     const cart = useSelector(state => state.cart);
     const auth = useSelector(state => state.auth);
 
     const dispatch = useDispatch();
-    //const cartItems = cart.cartItems;
     const [cartItems, setCartItems] = useState(cart.cartItems);
 
     useEffect(() => {
@@ -79,8 +77,8 @@ const CartPage = (props) => {
         <Layout>
             <div className="cartContainer" style={{ alignItems: 'flex-start' }}>
                 <Card
-                    headerLeft={`My Cart`}
-                    headerRight={<div>Deliver to</div>}
+                    headerleft={`My Cart`}
+                    headerright={<div>Deliver to</div>}
                     style={{ width: "calc(100% - 400px)", overflow: "hidden" }}
                 >
                     {

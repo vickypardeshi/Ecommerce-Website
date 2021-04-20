@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import './App.css';
 import HomePage from './views/HomePage';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import ProductListPage from './views/ProductListPage';
@@ -10,9 +9,10 @@ import CartPage from './views/Cart/CartPage';
 import CheckoutPage from './views/Cart/CheckoutPage';
 import OrderPage from './views/Order/OrderPage';
 import OrderDetailsPage from './views/Order/OrderDetailsPage';
+import './App.css';
+
 
 function App() {
-
   const dispatch = useDispatch();
   const auth = useSelector(state => state.auth);
 

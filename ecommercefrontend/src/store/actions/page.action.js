@@ -5,13 +5,10 @@ export const getProductPage = (payload) => {
     return async dispatch => {
         try {
             const { cid, type } = payload.params;
-
             dispatch({
                 type: pageConstants.GET_PRODUCT_PAGE_REQUEST,
             });
-
             const res = await axios.get(`/page/${cid}/${type}`);
-
             if (res.status === 200) {
                 const { page } = res.data;
                 dispatch({
@@ -31,8 +28,12 @@ export const getProductPage = (payload) => {
             }
         }
         catch(error){
-            console.log(error);
+            dispatch({
+                type: pageConstants.GET_PRODUCT_PAGE_FAILURE,
+                payload: {
+                    error: 'Something went wrong',
+                }
+            });
         }
-        
     }
-}
+};

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { getAllCategory } from '../store/actions/action';
 import '../styles/menuHeader.css'
 
@@ -20,9 +21,9 @@ const MenuHeader = () => {
                     {
                         category.parentId 
                         ?
-                            <a href={`/${category.slug}?cid=${category._id}&type=${category.type}`}>
+                            <Link to={`/${category.slug}?cid=${category._id}&type=${category.type}`}>
                                 {category.name}
-                            </a>
+                            </Link>
                         :   
                             <span>{category.name}</span>
                     }   

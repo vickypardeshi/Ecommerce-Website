@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 import { getProductBySlug } from '../../store/actions/action';
 import Card from '../../components/common/Card';
 import { generatePublicUrl } from '../../api/url';
-
 import '../../styles/products/clothingandaccessories.css';
+
 
 const ClothingAndAccessories = (props) => {
     const product = useSelector((state) => state.product);

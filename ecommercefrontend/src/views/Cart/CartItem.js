@@ -5,11 +5,10 @@ import { generatePublicUrl } from '../../api/url';
 import '../../styles/cart/cartitem.css'
 
 const CartItem = (props) => {
-
     const [qty, setQty] = useState(props.cartItem.qty);
-    console.log(props.cartItem)
     const {
         onQuantityInc, onQuantityDec,
+        onRemoveCartItem,
     } = props;
     const {
         _id, name, price, img
@@ -66,10 +65,10 @@ const CartItem = (props) => {
                 <button className="cartActionBtn">save for later</button>
                 <button
                     className="cartActionBtn"
-                    onClick={() => props.onRemoveCartItem(_id)}
+                    onClick={() => onRemoveCartItem(_id)}
                 >
                     Remove
-        </button>
+                </button>
             </div>
         </div>
     );

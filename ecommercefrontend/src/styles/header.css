@@ -35,7 +35,7 @@
     text-transform: capitalize;
     font-style: italic;
     color: yellow;
-  }
+}
 .logo .goldenStar{
     width: 10px;
     height: 10px;
@@ -81,6 +81,7 @@
     font-weight: 500;
     font-size: 16px;
     cursor: pointer;
+    text-decoration: none;
   }
 .more, .firstName {
     font-weight: bold;
@@ -90,7 +91,8 @@
     margin: 0 20px;
     cursor: pointer;
     text-decoration: none;
-  }
+}
+
 .cart {
     font-weight: bold;
     color: #fff;

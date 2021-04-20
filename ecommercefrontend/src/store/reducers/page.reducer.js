@@ -2,7 +2,7 @@ import { pageConstants } from "../actions/constants"
 
 const initState = {
     loading: false,
-    error: false,
+    error: null,
     page: {}
 }
 
@@ -33,4 +33,4 @@ export default (state = initState, action) => {
             return state;
     }
     return state;
-}
+};

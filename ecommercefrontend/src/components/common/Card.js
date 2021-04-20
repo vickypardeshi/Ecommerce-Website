@@ -8,22 +8,22 @@ const Card = (props) => {
             {...props}
         >
             {
-                (props.headerLeft || props.headerRight) && (
+                (props.headerleft || props.headerright) && (
                     <div className="cardHeader">
                         {
-                            props.headerLeft && (
+                            props.headerleft && (
                                 <div
-                                // style={{
-                                //     alignSelf: "center",
-                                //     fontSize: "20px",
-                                //     fontWeight: "500",
-                                // }}
+                                style={{
+                                    alignSelf: "center",
+                                    fontSize: "20px",
+                                    fontWeight: "500",
+                                }}
                                 >
-                                    {props.headerLeft}
+                                    {props.headerleft}
                                 </div>
                             )
                         }
-                        {props.headerRight && props.headerRight}
+                        {props.headerright && props.headerright}
                     </div>
                 )
             }

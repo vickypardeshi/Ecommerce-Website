@@ -8,7 +8,6 @@ export const getParams = (query) => {
                 const keyValue = param.split("=");
                 paramsObj[keyValue[0]] = keyValue[1];
             });
-
             return paramsObj;
         }
     }

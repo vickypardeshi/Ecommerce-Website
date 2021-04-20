@@ -3,15 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { generatePublicUrl } from '../../api/url';
 import { getProductBySlug } from '../../store/actions/action';
 import { Link } from 'react-router-dom';
-import '../../styles/products/productStore.css';
 import Card from '../../components/common/Card';
 import { MaterialButton } from '../../components/derived/HeaderContent';
 import Rating from '../../components/common/Rating';
 import Price from '../../components/common/Price';
+import '../../styles/products/productStore.css';
 
 
 const ProductStore = (props) => {
-
     const product = useSelector(state => state.product);
     const priceRange = product.priceRange;
     const dispatch = useDispatch();
@@ -27,8 +26,8 @@ const ProductStore = (props) => {
                 Object.keys(product.productsByPrice).map((key, index) => {
                     return (
                         <Card
-                            headerLeft={`${props.match.params.slug} mobile under ${priceRange[key]}`}
-                            headerRight={
+                            headerleft={`${props.match.params.slug} mobile under ${priceRange[key]}`}
+                            headerright={
                                 <MaterialButton
                                     title={"VIEW ALL"}
                                     style={{

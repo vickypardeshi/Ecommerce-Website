@@ -1,5 +1,5 @@
-import React from "react";
-import { IoIosCart } from "react-icons/io";
+import React from 'react';
+import { IoIosCart } from 'react-icons/io';
 
 const Cart = (props) => {
   return (

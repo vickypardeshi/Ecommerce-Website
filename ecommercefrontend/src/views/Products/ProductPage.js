@@ -8,7 +8,6 @@ import Card from '../../components/common/Card';
 import '../../styles/products/productPage.css'
 
 const ProductPage = (props) => {
-
     const dispatch = useDispatch();
     const { page } = useSelector(state => state.page);
     useEffect(() => {
@@ -17,7 +16,6 @@ const ProductPage = (props) => {
             params,
         };
         dispatch(getProductPage(payload));
-
     }, [dispatch, props.location.search]);
 
     return(

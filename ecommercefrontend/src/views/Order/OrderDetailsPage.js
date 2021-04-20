@@ -4,17 +4,14 @@ import { getOrder } from '../../store/actions/action';
 import Layout from '../../components/Layout';
 import Card from '../../components/common/Card';
 import Price from '../../components/common/Price';
-
-import '../../styles/order/orderdetailspage.css'
 import { generatePublicUrl } from '../../api/url';
-
+import '../../styles/order/orderdetailspage.css'
 
 const OrderDetailsPage = (props) => {
   const dispatch = useDispatch();
   const orderDetails = useSelector((state) => state.user.orderDetails);
 
   useEffect(() => {
-    console.log({ props });
     const payload = {
       orderId: props.match.params.orderId,
     };
@@ -120,7 +117,7 @@ const OrderDetailsPage = (props) => {
             </div>
             <div style={{ fontWeight: "500", fontSize: 14 }}>
               {orderDetails.orderStatus[3].isCompleted &&
-                `Delivered on ${formatDate2(orderDetails.orderStatus[3].date)}`}
+                `Order Delivered on ${formatDate2(orderDetails.orderStatus[3].date)}`}
             </div>
           </Card>
         ))}
