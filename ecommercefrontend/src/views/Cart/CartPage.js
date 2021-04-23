@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Layout from '../../components/Layout';
 import Card from '../../components/common/Card';
+import Loader from '../../components/common/Loader';
 import CartItem from './CartItem';
 import { addToCart, getCartItems, removeCartItem } from '../../store/actions/action';
 import { MaterialButton } from '../../components/derived/HeaderContent';
 import PriceDetails from './PriceDetails';
 import '../../styles/cart/cartpage.css'
-
-
 
 /*
 Before Login
@@ -24,6 +23,7 @@ const CartPage = (props) => {
 
     const dispatch = useDispatch();
     const [cartItems, setCartItems] = useState(cart.cartItems);
+    const { loading } = cart;
 
     useEffect(() => {
         setCartItems(cart.cartItems);
@@ -57,7 +57,9 @@ const CartPage = (props) => {
     if (props.onlyCartItems) {
         return (
             <>
-                {
+                {Object.keys(cartItems).length === 0 ?
+                    <h1>Your Cart is Empty</h1>
+                :
                     Object.keys(cartItems).map((key, index) =>
                         <CartItem
                             key={index}
@@ -73,6 +75,14 @@ const CartPage = (props) => {
         );
     }
 
+    if(loading){
+        return(
+            <Layout>
+                <Loader />
+            </Layout>
+        );
+    }
+
     return (
         <Layout>
             <div className="cartContainer" style={{ alignItems: 'flex-start' }}>
@@ -81,46 +91,57 @@ const CartPage = (props) => {
                     headerright={<div>Deliver to</div>}
                     style={{ width: "calc(100% - 400px)", overflow: "hidden" }}
                 >
-                    {
-                        Object.keys(cartItems).map((key, index) =>
-                            <CartItem
-                                key={index}
-                                cartItem={cartItems[key]}
-                                onQuantityInc={onQuantityIncrement}
-                                onQuantityDec={onQuantityDecrement}
-                                onQuantityChange={onQuantityChange}
-                                onRemoveCartItem={onRemoveCartItem}
-                            />
-                        )
+                    {Object.keys(cartItems).length === 0
+                        ?
+                        <h1 style={{ textAlign: 'center' }}>
+                            Your cart is Empty
+                        </h1>
+                        :
+                        <>
+                            {
+                                Object.keys(cartItems).map((key, index) =>
+                                    <CartItem
+                                        key={index}
+                                        cartItem={cartItems[key]}
+                                        onQuantityInc={onQuantityIncrement}
+                                        onQuantityDec={onQuantityDecrement}
+                                        onQuantityChange={onQuantityChange}
+                                        onRemoveCartItem={onRemoveCartItem}
+                                    />
+                                )
+                            }
+                            <div
+                                style={{
+                                    width: "100%",
+                                    display: "flex",
+                                    background: "#ffffff",
+                                    justifyContent: "flex-end",
+                                    boxShadow: "0 0 10px 10px #eee",
+                                    padding: "10px 0",
+                                    boxSizing: "border-box",
+                                }}
+                            >
+                                <div style={{ width: "250px" }}>
+                                    <MaterialButton
+                                        title="PLACE ORDER"
+                                        onClick={() => props.history.push(`/checkout`)}
+                                    />
+                                </div>
+                            </div>
+                        </>
                     }
-                    <div
-                        style={{
-                            width: "100%",
-                            display: "flex",
-                            background: "#ffffff",
-                            justifyContent: "flex-end",
-                            boxShadow: "0 0 10px 10px #eee",
-                            padding: "10px 0",
-                            boxSizing: "border-box",
-                        }}
-                    >
-                        <div style={{ width: "250px" }}>
-                            <MaterialButton
-                                title="PLACE ORDER"
-                                onClick={() => props.history.push(`/checkout`)}
-                            />
-                        </div>
-                    </div>
                 </Card>
-                <PriceDetails
-                    totalItem={Object.keys(cart.cartItems).reduce(function (qty, key) {
-                        return qty + cart.cartItems[key].qty;
-                    }, 0)}
-                    totalPrice={Object.keys(cart.cartItems).reduce((totalPrice, key) => {
-                        const { price, qty } = cart.cartItems[key];
-                        return totalPrice + price * qty;
-                    }, 0)}
-                />
+                {Object.keys(cartItems).length !== 0 &&
+                    <PriceDetails
+                        totalItem={Object.keys(cart.cartItems).reduce(function (qty, key) {
+                            return qty + cart.cartItems[key].qty;
+                        }, 0)}
+                        totalPrice={Object.keys(cart.cartItems).reduce((totalPrice, key) => {
+                            const { price, qty } = cart.cartItems[key];
+                            return totalPrice + price * qty;
+                        }, 0)}
+                    />
+                }
             </div>
         </Layout>
     );

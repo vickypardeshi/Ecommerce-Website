@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import Layout from '../../components/Layout';
 import { getProductDetailsById } from '../../store/actions/action';
 import { IoIosArrowForward, IoIosStar, IoMdCart } from "react-icons/io";
-import { BiRupee } from "react-icons/bi";
 import { AiFillThunderbolt } from "react-icons/ai";
 import {
     MaterialButton
@@ -12,12 +11,14 @@ import {
 import { generatePublicUrl } from '../../api/url';
 import { addToCart } from '../../store/actions/action';
 import '../../styles/products/productDetails.css'
+import Loader from '../../components/common/Loader';
 
 
 const ProductDetailsPage = (props) => {
     const dispatch = useDispatch();
     const product = useSelector(state => state.product);
     console.log(product);
+    const { loading } = product;
 
     useEffect(() => {
         const { productId } = props.match.params;
@@ -28,6 +29,14 @@ const ProductDetailsPage = (props) => {
         }
         dispatch(getProductDetailsById(payload));
     }, [dispatch, props.match.params]);
+
+    if(loading){
+        return (
+            <Layout>
+                <Loader />
+            </Layout>
+        );
+    }
 
     if (Object.keys(product.productDetails).length === 0) {
         return null;
@@ -122,13 +131,12 @@ const ProductDetailsPage = (props) => {
                             </span>
                         </div>
                         <div className="extraOffer">
-                            Extra <BiRupee />
+                            Extra ₹
                             4500 off{" "}
                         </div>
                         <div className="flexRow priceContainer">
                             <span className="price">
-                                <BiRupee />
-                                {product.productDetails.price}
+                                ₹{product.productDetails.price}
                             </span>
                             <span className="discount" style={{ margin: "0 10px" }}>
                                 22% off

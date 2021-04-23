@@ -1,5 +1,4 @@
 import React from 'react';
-import { BiRupee } from 'react-icons/bi';
 
 const Price = (props) => {
   return (
@@ -10,8 +9,7 @@ const Price = (props) => {
         margin: "5px 0",
       }}
     >
-      <BiRupee />
-      {props.value}
+      ₹{props.value}
     </div>
   );
 };

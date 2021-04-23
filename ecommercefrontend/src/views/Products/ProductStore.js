@@ -8,10 +8,12 @@ import { MaterialButton } from '../../components/derived/HeaderContent';
 import Rating from '../../components/common/Rating';
 import Price from '../../components/common/Price';
 import '../../styles/products/productStore.css';
+import Loader from '../../components/common/Loader';
 
 
 const ProductStore = (props) => {
     const product = useSelector(state => state.product);
+    const { loading } = product;
     const priceRange = product.priceRange;
     const dispatch = useDispatch();
 
@@ -19,6 +21,12 @@ const ProductStore = (props) => {
         const { slug } = props.match.params;
         dispatch(getProductBySlug(slug));
     }, [dispatch, props.match.params]);
+
+    if(loading){
+        return (
+            <Loader />
+        );
+    }
 
     return (
         <>

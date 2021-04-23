@@ -5,11 +5,13 @@ import { getParams } from '../../utilities/Utils';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 import Card from '../../components/common/Card';
+import Loader from '../../components/common/Loader';
 import '../../styles/products/productPage.css'
 
 const ProductPage = (props) => {
     const dispatch = useDispatch();
     const { page } = useSelector(state => state.page);
+    
     useEffect(() => {
         const params = getParams(props.location.search);
         const payload = {
@@ -17,6 +19,12 @@ const ProductPage = (props) => {
         };
         dispatch(getProductPage(payload));
     }, [dispatch, props.location.search]);
+
+    if(!page.title){
+        return (
+            <Loader />
+        );
+    }
 
     return(
         <div className="main-container">

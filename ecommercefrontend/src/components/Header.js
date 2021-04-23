@@ -33,7 +33,7 @@ const Header = (props) => {
 
     const auth = useSelector(state => state.auth);
     const cart = useSelector((state) => state.cart);
-    console.log({auth});
+    
     const dispatch = useDispatch();
 
     const handleLoginModalClose = () => {
@@ -112,7 +112,7 @@ const Header = (props) => {
                     { label: "Rewards", href: "", icon: null },
                     { label: "Notifications", href: "", icon: null },
                     { label: "Gift Cards", href: "", icon: null },
-                    { label: "Logout", href: "", icon: null, onClick: logout },
+                    { label: "Logout", href: `/`, icon: null, onClick: logout },
                 ]}
             />
         );

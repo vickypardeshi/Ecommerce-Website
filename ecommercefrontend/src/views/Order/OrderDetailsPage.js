@@ -6,10 +6,13 @@ import Card from '../../components/common/Card';
 import Price from '../../components/common/Price';
 import { generatePublicUrl } from '../../api/url';
 import '../../styles/order/orderdetailspage.css'
+import Loader from '../../components/common/Loader';
 
 const OrderDetailsPage = (props) => {
   const dispatch = useDispatch();
   const orderDetails = useSelector((state) => state.user.orderDetails);
+  const authenticate = useSelector((state) => state.auth.authenticate);
+  console.log('loder', orderDetails);
 
   useEffect(() => {
     const payload = {
@@ -47,8 +50,20 @@ const OrderDetailsPage = (props) => {
     }
   };
 
+
   if (!(orderDetails && orderDetails.address)) {
-    return null;
+    return (
+      <Layout>
+        {!authenticate
+        ? 
+          <h1 style={{textAlign: 'center'}}>
+            No Orders. Please Login
+          </h1>
+        : 
+          <Loader />
+        }
+      </Layout>
+    );
   }
 
   return (

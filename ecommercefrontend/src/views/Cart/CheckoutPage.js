@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import {
   addOrder,
@@ -218,10 +219,10 @@ const CheckoutPage = (props) => {
                   <span style={{ margin: "0 5px" }}>{auth.user.email}</span>
                   <Button
                     style={{
-                      margin: "0 10px 0 350px", 
+                      margin: "0 10px 0 350px",
                       padding: '5px'
                     }}
-                    onClick={() =>{alert('logout')}}
+                    onClick={() => { alert('logout') }}
                   >
                     Change
                   </Button>
@@ -232,12 +233,18 @@ const CheckoutPage = (props) => {
                       type="text"
                       label="Email/Mobile Number"
                       value={email}
+                      style={{
+                        marginLeft: '10px'
+                      }}
                       onChange={(e) => setEmail(e.target.value)}
                     />
                     <MaterialInput
                       type="password"
                       label="Password"
                       value={password}
+                      style={{
+                        marginLeft: '10px'
+                      }}
                       onChange={(e) => setPassword(e.target.value)}
                     // rightelement={<Link to={"#"}>Forgot?</Link>}
                     />
@@ -247,11 +254,22 @@ const CheckoutPage = (props) => {
                         bgColor="#fb641b"
                         textColor="#ffffff"
                         style={{
-                          margin: "10px 250px",
+                          margin: "10px 500px 10px 10px",
                         }}
                         onClick={userLogin}
                       />
                     </div>
+                    {auth.error && (
+                      <div
+                        style={{
+                          color: "red",
+                          fontSize: 14,
+                          margin: '10px',
+                        }}
+                      >
+                        {auth.error}
+                      </div>
+                    )}
                   </div>
                 )
             }
@@ -283,7 +301,7 @@ const CheckoutPage = (props) => {
 
           {/* AddressForm */}
           {confirmAddress ? null : newAddress ? (
-            <AddressForm onSubmitForm={onAddressSubmit} onCancel={() => { setNewAddress(false) }}  />
+            <AddressForm onSubmitForm={onAddressSubmit} onCancel={() => { setNewAddress(false) }} />
           ) : auth.authenticate ? (
             <CheckoutStep
               stepNumber={"+"}
@@ -307,6 +325,10 @@ const CheckoutPage = (props) => {
               ) : null
             }
           />
+
+          {Object.keys(cart.cartItems).length === 0 &&
+            <Redirect to="/cart" />   
+          }
 
           {orderSummary && (
             <Card

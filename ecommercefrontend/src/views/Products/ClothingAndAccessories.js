@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { BiRupee } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
 import { getProductBySlug } from '../../store/actions/action';
 import Card from '../../components/common/Card';
 import { generatePublicUrl } from '../../api/url';
 import '../../styles/products/clothingandaccessories.css';
+import Loader from '../../components/common/Loader';
 
 
 const ClothingAndAccessories = (props) => {
     const product = useSelector((state) => state.product);
+    const { loading } = product;
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -17,13 +18,25 @@ const ClothingAndAccessories = (props) => {
         dispatch(getProductBySlug(match.params.slug));
     }, [dispatch, props]);
 
+    if(loading){
+        return (
+            <Loader />
+        );
+    }
+
     return (
-        <div style={{ padding: "10px" }}>
+        <div 
+            style={{
+                padding: "10px",                
+            }}
+        >
             <Card
                 style={{
                     boxSizing: "border-box",
                     padding: "10px",
                     display: "flex",
+                    flexWrap: 'wrap',
+                    paddingLeft: '50px'
                 }}
             >
                 {product.products.map((product) => (
@@ -39,9 +52,8 @@ const ClothingAndAccessories = (props) => {
                         </Link>
                         <div>
                             <div className="caProductName">{product.name}</div>
-                            <div className="caProductPrice">
-                                <BiRupee />
-                                {product.price}
+                            <div className="caProductPrice">     
+                                ₹{product.price}
                             </div>
                         </div>
                     </div>

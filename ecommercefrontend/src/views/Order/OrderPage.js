@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { BiRupee } from "react-icons/bi";
 import { IoIosArrowForward } from "react-icons/io";
 import { getOrders } from '../../store/actions/action';
 import Layout from '../../components/Layout';
 import Card from '../../components/common/Card';
+import Loader from '../../components/common/Loader';
 import { Breed } from '../../components/derived/HeaderContent';
 import { generatePublicUrl } from '../../api/url';
 import '../../styles/order/orderpage.css';
@@ -13,10 +13,31 @@ import '../../styles/order/orderpage.css';
 const OrderPage = (props) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  const { authenticate } = useSelector((state) => state.auth);
+  const { orderFetching } = user;
+  console.log(user);
 
   useEffect(() => {
     dispatch(getOrders());
   }, [dispatch]);
+
+  if(orderFetching){
+    return(
+      <Layout>
+        <Loader />
+      </Layout>
+    );
+  }
+
+  if(!authenticate){
+    return(
+      <Layout>
+        <h1 style={{textAlign: 'center'}}>
+          No Orders. Please Login
+        </h1>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
@@ -46,8 +67,7 @@ const OrderPage = (props) => {
                 <div className="orderRow">
                   <div className="orderName">{item.productId.name}</div>
                   <div className="orderPrice">
-                    <BiRupee />
-                    {item.payablePrice}
+                    ₹{item.payablePrice}
                   </div>
                   <div>{order.paymentStatus}</div>
                 </div>
