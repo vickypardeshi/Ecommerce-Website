@@ -30,7 +30,7 @@ function getCategoriesList(categories, parentId=null){
 exports.addCategory = (req, res) => {
     const categoryObj = {
         name: req.body.name,
-        slug: `${slugify(req.body.name)}-${shortid.generate()}`,
+        slug: req.body.name,
         createdBy: req.user._id, 
     }
 
